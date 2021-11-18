@@ -8,4 +8,6 @@ const colors = {
   "Sky Blue Crayola": "91e5f6",
 };
 
-export default { colors };
+const darkTheme = { colors };
+
+export default darkTheme;
