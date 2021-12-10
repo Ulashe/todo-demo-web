@@ -1,0 +1,40 @@
+https://styled-system.com/table
+
+space       margin, padding -> m,mt,mr,mb,ml,mx,my,p,pt,pr,pb,pl,px,py
+color       color, backgroundColor, bg
+typography  fontFamily, fontSize, fontWeight, fontStyle, lineHeight, letterSpacing, textAlign
+layout      width,height,display,minWidth,minHeight,maxWidth,maxHeight,size,verticalAlign,
+            overflow,overflowX,overflowY
+flexbox     alignItems,alignContent,justifyItems,justifyContent,flexWrap,flexDirection,flex,flexGrow,
+            flexShrink,flexBasis,justifySelf,alignSelf,order
+border      border, borderWidth, borderStyle, borderColor, borderRadius, borderTop, borderTopWidth, 
+            borderTopStyle, borderTopColor, borderTopLeftRadius, borderTopRightRadius, borderRight, 
+            borderRightWidth, borderRightStyle, borderRightColor, borderBottom, borderBottomWidth, 
+            borderBottomStyle, borderBottomColor, borderBottomLeftRadius, borderBottomRightRadius, 
+            borderLeft, borderLeftWidth, borderLeftStyle, borderLeftColor, borderX, borderY
+position    position, zIndex, top, right, bottom, left
+shadow      textShadow, boxShadow
+
+// default fontSizes
+const fontSizes = [12, 14, 16, 20, 24, 32, 48, 64, 72]
+
+// default space for margin and padding
+const space = [0, 4, 8, 16, 32, 64, 128, 256, 512]
+
+https://styled-system.com/theme-specification/
+If the theme key-value is an array => margin={2}, margin={3} 
+If the theme key-value is an object => margin="small", margin="large"
+
+colors = {
+  red: "#ff0000",
+  blue: [
+    '#f1f8ff',
+    '#dbedff',
+    '#c8e1ff',
+    '#79b8ff',
+    ],
+  green: {
+    light: "99ff99",
+    heavy: "00ff00"
+  }
+}
