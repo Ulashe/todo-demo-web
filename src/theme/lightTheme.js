@@ -18,6 +18,11 @@ const navbar = {
   iconHover: colors.blue[1],
 };
 
+const todoList = {
+  color: colors.blue[4],
+  bg: colors.blue[9],
+};
+
 const textButtonCommon = {
   fontSize: 18,
   fontWeight: 500,
@@ -59,6 +64,7 @@ const textButton = {
 const lightTheme = {
   colors,
   navbar,
+  todoList,
   maxWidth: "800px",
   textButton,
 };

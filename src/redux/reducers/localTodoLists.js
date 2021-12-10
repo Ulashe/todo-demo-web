@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 const uniqueId = () => {
   const dateString = Date.now().toString(36);
@@ -16,7 +16,33 @@ const todoList = (payload) => ({
 
 const slice = createSlice({
   name: "localTodoLists",
-  initialState: [],
+  initialState: [
+    {
+      _id: "kw7koihh3i7g2kjtuoy",
+      title: "Kahvaltı Listesi",
+      createdAt: "2021-11-20T08:52:25.840Z",
+      updatedAt: "2021-11-20T08:52:25.840Z",
+      todos: [
+        { text: "Süt", isCompleted: false },
+        { text: "Yumurta", isCompleted: false },
+        { text: "Peynir", isCompleted: true },
+        { text: "Zeytin", isCompleted: false },
+        { text: "Ekmek", isCompleted: true },
+      ],
+    },
+    {
+      _id: "kw7ks5n6c8hqnmkpp2",
+      title: "Alışveriş Listesi",
+      createdAt: "2021-11-20T09:00:17.060Z",
+      updatedAt: "2021-11-20T09:00:17.060Z",
+      todos: [
+        { text: "Pantolon", isCompleted: false },
+        { text: "Spor ayakkabı", isCompleted: false },
+        { text: "Ceket", isCompleted: false },
+        { text: "Tişört", isCompleted: true },
+      ],
+    },
+  ],
   reducers: {
     addTodoList: (state, action) => {
       state.push(todoList(action.payload));
@@ -56,6 +82,11 @@ const slice = createSlice({
     },
   },
 });
+
+export const getAllLocalTodoLists = createSelector(
+  (state) => state.localTodoLists,
+  (localTodoLists) => localTodoLists
+);
 
 export const {
   addTodoList,
