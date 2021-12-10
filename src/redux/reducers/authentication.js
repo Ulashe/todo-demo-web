@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const signOutThunk = () => (dispatch, getState) => {
@@ -30,6 +30,11 @@ const authentication = createSlice({
     },
   },
 });
+
+export const getAuth = createSelector(
+  (state) => state.authentication,
+  (state) => state
+);
 
 export const { signIn, signOut, refresh } = authentication.actions;
 
