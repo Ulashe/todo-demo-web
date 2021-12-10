@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import auth from "./auth";
+import authentication from "./authentication";
 import theme from "./theme";
 import localTodoLists from "./localTodoLists";
 
-export default combineReducers({ auth, theme, localTodoLists });
+export default combineReducers({ authentication, theme, localTodoLists });
