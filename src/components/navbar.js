@@ -6,6 +6,32 @@ import IconWrapper from "./iconWrapper";
 import { ReactComponent as AccountIcon } from "../assets/icons/account.svg";
 import { ReactComponent as LoginIcon } from "../assets/icons/login.svg";
 
+export default function Navbar() {
+  const auth = useSelector(getAuth);
+  const [iconClicked, setIconClicked] = React.useState(false);
+
+  return (
+    <Outer>
+      <Inner>
+        <FlexBox>
+          <Heading>To Do Demo</Heading>
+          <IconWithText>
+            <IconText>Giriş Yapın</IconText>
+            <IconWrapper
+              fill={(theme) => theme.navbar.iconColor}
+              iconSize="36px"
+              onClick={() => setIconClicked((s) => !s)}
+            >
+              {auth.refreshToken ? <AccountIcon /> : <LoginIcon />}
+            </IconWrapper>
+          </IconWithText>
+        </FlexBox>
+        {iconClicked ? <Dropdown>Lorem ipsum</Dropdown> : null}
+      </Inner>
+    </Outer>
+  );
+}
+
 const Outer = styled("div")({
   backgroundColor: ({ theme }) => theme.colors.blue[0],
 });
@@ -55,25 +81,3 @@ const IconText = styled("p")({
   fontSize: 16,
   color: ({ theme }) => theme.colors.blue[8],
 });
-
-export default function Navbar() {
-  const auth = useSelector(getAuth);
-  const [iconClicked, setIconClicked] = React.useState(false);
-
-  return (
-    <Outer>
-      <Inner>
-        <FlexBox>
-          <Heading>To Do Demo</Heading>
-          <IconWithText>
-            <IconText>Giriş Yapın</IconText>
-            <IconWrapper size="36px" onClick={() => setIconClicked((s) => !s)}>
-              {auth.refreshToken ? <AccountIcon /> : <LoginIcon />}
-            </IconWrapper>
-          </IconWithText>
-        </FlexBox>
-        {iconClicked ? <Dropdown>Lorem ipsum</Dropdown> : null}
-      </Inner>
-    </Outer>
-  );
-}

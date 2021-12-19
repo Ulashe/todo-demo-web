@@ -9,40 +9,16 @@ const uniqueId = () => {
 const todoList = (payload) => ({
   _id: uniqueId(),
   title: payload.title,
-  todos: payload.todos.map((todo) => ({ text: todo.text, isCompleted: false })),
+  todos: payload.todos
+    ? payload.todos.map((todo) => ({ text: todo.text, isCompleted: false }))
+    : undefined,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 });
 
 const slice = createSlice({
   name: "localTodoLists",
-  initialState: [
-    {
-      _id: "kw7koihh3i7g2kjtuoy",
-      title: "Kahvaltı Listesi",
-      createdAt: "2021-11-20T08:52:25.840Z",
-      updatedAt: "2021-11-20T08:52:25.840Z",
-      todos: [
-        { text: "Süt", isCompleted: false },
-        { text: "Yumurta", isCompleted: false },
-        { text: "Peynir", isCompleted: true },
-        { text: "Zeytin", isCompleted: false },
-        { text: "Ekmek", isCompleted: true },
-      ],
-    },
-    {
-      _id: "kw7ks5n6c8hqnmkpp2",
-      title: "Alışveriş Listesi",
-      createdAt: "2021-11-20T09:00:17.060Z",
-      updatedAt: "2021-11-20T09:00:17.060Z",
-      todos: [
-        { text: "Pantolon", isCompleted: false },
-        { text: "Spor ayakkabı", isCompleted: false },
-        { text: "Ceket", isCompleted: false },
-        { text: "Tişört", isCompleted: true },
-      ],
-    },
-  ],
+  initialState: [],
   reducers: {
     addTodoList: (state, action) => {
       state.push(todoList(action.payload));
