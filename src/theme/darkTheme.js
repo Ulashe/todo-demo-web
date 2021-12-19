@@ -1,15 +1,15 @@
 const colors = {
   blue: [
-    "#133c55",
-    "#1d4969",
-    "#26567d",
-    "#2f6391",
-    "#386fa4",
-    "#498abe",
-    "#59a5d8",
-    "#6fbce7",
-    "#84d2f6",
-    "#a4e9f8",
+    "hsl(203, 63%, 20%)",
+    "hsl(205, 57%, 26%)",
+    "hsl(207, 53%, 32%)",
+    "hsl(208, 51%, 38%)",
+    "hsl(209, 49%, 43%)",
+    "hsl(207, 47%, 52%)",
+    "hsl(204, 62%, 60%)",
+    "hsl(202, 71%, 67%)",
+    "hsl(199, 86%, 74%)",
+    "hsl(191, 86%, 81%)",
   ],
 };
 
@@ -18,7 +18,7 @@ const navbar = {
   iconHover: colors.blue[1],
 };
 
-const todoList = {
+const todoListItem = {
   color: colors.blue[4],
   bg: colors.blue[9],
 };
@@ -61,11 +61,17 @@ const textButton = {
   },
 };
 
+const modal = {
+  bg: "white",
+  color: colors.blue[1],
+};
+
 const lightTheme = {
   colors,
   navbar,
-  todoList,
+  todoListItem,
   maxWidth: "800px",
   textButton,
+  modal,
 };
 export default lightTheme;
