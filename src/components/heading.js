@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default styled("div")((props) => ({
+export const Heading = styled("p")((props) => ({
   fontSize: 36,
   fontWeight: 600,
   letterSpacing: 2,

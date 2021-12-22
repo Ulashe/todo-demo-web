@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { border, color, compose, flex, layout, position, shadow, space } from "styled-system";
 
-export default styled.div(
+export const IconWrapper = styled.div(
   (props) => ({
     justifyContent: props.center ? "center" : undefined,
     alignItems: props.center ? "center" : undefined,
@@ -9,10 +9,10 @@ export default styled.div(
     svg: {
       width: props.iconSize,
       height: props.iconSize,
-      fill: props.fill
-        ? typeof props.fill == "function"
-          ? props.fill(props.theme)
-          : props.fill
+      fill: props.iconFill
+        ? typeof props.iconFill == "function"
+          ? props.iconFill(props.theme)
+          : props.iconFill
         : props.theme.colors.blue[1],
     },
     "&: hover": {

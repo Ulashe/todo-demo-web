@@ -2,23 +2,28 @@ import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { getAuth } from "../redux/reducers/authentication";
-import IconWrapper from "./iconWrapper";
+import { IconWrapper } from "./iconWrapper";
 import { ReactComponent as AccountIcon } from "../assets/icons/account.svg";
 import { ReactComponent as LoginIcon } from "../assets/icons/login.svg";
+import { useNavigate } from "react-router";
 
 export default function Navbar() {
   const auth = useSelector(getAuth);
   const [iconClicked, setIconClicked] = React.useState(false);
+  const navigate = useNavigate();
+  const goToHomepage = () => navigate("/");
 
   return (
     <Outer>
       <Inner>
         <FlexBox>
-          <Heading>To Do Demo</Heading>
+          <Heading style={{ cursor: "pointer" }} onClick={goToHomepage}>
+            To Do Demo
+          </Heading>
           <IconWithText>
             <IconText>Giriş Yapın</IconText>
             <IconWrapper
-              fill={(theme) => theme.navbar.iconColor}
+              iconFill={(theme) => theme.navbar.iconColor}
               iconSize="36px"
               onClick={() => setIconClicked((s) => !s)}
             >

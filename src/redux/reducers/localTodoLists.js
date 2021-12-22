@@ -1,13 +1,13 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 
-const uniqueId = () => {
+export const generateID = () => {
   const dateString = Date.now().toString(36);
   const randomness = Math.random().toString(36).substr(2);
   return dateString + randomness;
 };
 
 const todoList = (payload) => ({
-  _id: uniqueId(),
+  _id: payload._id ? payload._id : generateID(),
   title: payload.title,
   todos: payload.todos
     ? payload.todos.map((todo) => ({ text: todo.text, isCompleted: false }))
@@ -63,6 +63,12 @@ export const getAllLocalTodoLists = createSelector(
   (state) => state.localTodoLists,
   (localTodoLists) => localTodoLists
 );
+
+export const getLocalTodoList = (_id) =>
+  createSelector(
+    (state) => state.localTodoLists,
+    (localTodoLists) => localTodoLists.find((i) => i._id == _id)
+  );
 
 export const {
   addTodoList,

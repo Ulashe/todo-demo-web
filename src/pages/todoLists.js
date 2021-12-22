@@ -1,45 +1,72 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllLocalTodoLists, deleteTodoList } from "../redux/reducers/localTodoLists";
-import Heading from "../components/heading";
-import { TodoListItem } from "../components/todoListItem";
-import { TextButton } from "../components/textButton";
-import { ModalButton } from "../components/modals/modalButton";
-import { NewTodoList } from "../components/modals/newTodoList";
-import { FlexBox } from "../components/styled-components";
-import IconWrapper from "../components/iconWrapper";
-import { ReactComponent as DeleteIcon } from "../assets/icons/delete.svg";
-import { hslAdjust } from "../utils/hslAdjust";
+import {
+  addTodoList as addTodoListAction,
+  getAllLocalTodoLists,
+  deleteTodoList,
+  generateID,
+} from "../redux/reducers/localTodoLists";
+import { getAuth } from "../redux/reducers/authentication";
+import axios from "axios";
+import TodoLists from "../components/todoLists";
+import { useNavigate } from "react-router";
 
-export default function TodoLists() {
-  const localTodoLists = useSelector(getAllLocalTodoLists);
-  const dispatch = useDispatch();
-  const remove = (_id) => () => dispatch(deleteTodoList({ _id }));
+export default function TodoListsPage() {
+  const auth = useSelector(getAuth);
+  if (auth.accessToken) {
+    return <RemoteTodoLists />;
+  } else {
+    return <LocalTodoLists />;
+  }
+}
+
+function RemoteTodoLists() {
+  const navigate = useNavigate();
+  const [todoLists, setTodoLists] = useState([]);
+
+  useEffect(() => {
+    axios.get("/api/todolists").then((res) => setTodoLists(res.data));
+  }, []);
+
+  const addTodoList =
+    ({ title }) =>
+    () => {
+      axios.post("/api/todolists", { title }).then((res) => {
+        setTodoLists((todoLists) => [...todoLists, res.data]);
+        navigate(`/${res.data._id}`);
+      });
+    };
+  const removeTodoList = ({ _id }) => {
+    axios
+      .delete(`/api/todolists/${_id}`)
+      .then(() => setTodoLists((todoLists) => todoLists.filter((i) => i._id != _id)));
+  };
 
   return (
-    <div>
-      <Heading>Todo Lists</Heading>
-      <FlexBox flexDirection="column" gridRowGap="10px" my="10px">
-        {localTodoLists.map((todo) => (
-          <FlexBox key={todo._id}>
-            <TodoListItem>{todo.title}</TodoListItem>
-            <IconWrapper
-              onClick={remove(todo._id)}
-              cursor="pointer"
-              display="flex"
-              center
-              iconSize="32px"
-              borderRadius="10px"
-              hoverBg={(theme) => hslAdjust(theme.colors.blue[1], 50)}
-            >
-              <DeleteIcon />
-            </IconWrapper>
-          </FlexBox>
-        ))}
-      </FlexBox>
-      <ModalButton modalContent={<NewTodoList />}>
-        <TextButton variant="outlined">Yeni bir Todo List oluştur</TextButton>
-      </ModalButton>
-    </div>
+    <TodoLists todoLists={todoLists} addTodoList={addTodoList} removeTodoList={removeTodoList} />
+  );
+}
+
+function LocalTodoLists() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const todoLists = useSelector(getAllLocalTodoLists);
+
+  const addTodoList =
+    ({ title }) =>
+    () => {
+      const _id = generateID();
+      dispatch(addTodoListAction({ title, _id }));
+      navigate(`/${_id}`);
+    };
+  const removeTodoList =
+    ({ _id }) =>
+    () => {
+      dispatch(deleteTodoList({ _id }));
+      console.log(`in removetodolist, _id: ${_id}`);
+    };
+
+  return (
+    <TodoLists todoLists={todoLists} addTodoList={addTodoList} removeTodoList={removeTodoList} />
   );
 }

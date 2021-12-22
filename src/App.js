@@ -8,6 +8,7 @@ import GlobalCSS from "./theme/global.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./pages/layout";
 import TodoLists from "./pages/todoLists";
+import TodoList from "./pages/todoList";
 
 axios.defaults.baseURL = "http://192.168.1.104:3000/api";
 
@@ -21,9 +22,8 @@ export default function App() {
           <BrowserRouter>
             <Layout>
               <Routes>
-                <Route path="/" element={<TodoLists />}>
-                  {/* <Route path=":id" element={<TodoList />} */}
-                </Route>
+                <Route path="/" element={<TodoLists />} />
+                <Route path="/:id" element={<TodoList />} />
               </Routes>
             </Layout>
           </BrowserRouter>
