@@ -1,33 +1,49 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getAuth } from "../redux/reducers/authentication";
-import { getAllLocalTodoLists } from "../redux/reducers/localTodoLists";
+import { addTodo as addTodoAction, getAllLocalTodoLists } from "../redux/reducers/localTodoLists";
 import axios from "axios";
-import { Heading } from "../components/heading";
+import TodoList from "../components/todoList";
 
-export default function TodoList() {
-  const location = useLocation();
+export default function TodoListPage() {
   const auth = useSelector(getAuth);
-  const [todo, setTodo] = useState();
-  const localTodoLists = useSelector(getAllLocalTodoLists);
+  if (auth.accessToken) {
+    return <RemoteTodoList />;
+  } else {
+    return <LocalTodoList />;
+  }
+}
+
+function RemoteTodoList() {
+  const location = useLocation();
+  const [todoList, setTodoList] = useState();
   useEffect(() => {
-    if (location.state && location.state.todo) {
-      setTodo(location.state.todo);
+    if (location.state && location.state.todoList) {
+      setTodoList(location.state.todoList);
     } else {
-      if (auth.accessToken) {
-        axios.get("/api/todolists" + location.pathname).then((res) => setTodo(res.data));
-      } else {
-        setTodo(localTodoLists.find((i) => i._id == location.pathname.substr(1)));
-      }
+      axios.get("/api/todolists" + location.pathname).then((res) => setTodoList(res.data));
     }
-  }, [auth]);
+  }, []);
 
-  if (!todo) return <div />;
+  return <TodoList todoList={todoList} />;
+}
 
-  return (
-    <div>
-      <Heading>Todo List Detay</Heading>
-    </div>
-  );
+function LocalTodoList() {
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const localTodoLists = useSelector(getAllLocalTodoLists);
+  const todoList = localTodoLists.find((i) => i._id == location.pathname.substring(1));
+
+  const addTodo =
+    ({ _id, text }, callback) =>
+    (e) => {
+      e.preventDefault();
+      if (callback) {
+        callback();
+      }
+      dispatch(addTodoAction({ _id, text }));
+    };
+
+  return <TodoList todoList={todoList} addTodo={addTodo} />;
 }

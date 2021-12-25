@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addTodoList as addTodoListAction,
   getAllLocalTodoLists,
-  deleteTodoList,
+  removeTodoList as removeTodoListAction,
   generateID,
 } from "../redux/reducers/localTodoLists";
 import { getAuth } from "../redux/reducers/authentication";
@@ -62,7 +62,7 @@ function LocalTodoLists() {
   const removeTodoList =
     ({ _id }) =>
     () => {
-      dispatch(deleteTodoList({ _id }));
+      dispatch(removeTodoListAction({ _id }));
       console.log(`in removetodolist, _id: ${_id}`);
     };
 

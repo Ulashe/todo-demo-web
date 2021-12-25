@@ -20,13 +20,14 @@ const navbar = {
 
 const todoListItem = {
   color: colors.blue[4],
+  subColor: colors.blue[2],
   bg: colors.blue[9],
 };
 
 const textButtonCommon = {
   fontSize: 18,
   fontWeight: 500,
-  padding: "20px 10px",
+  padding: 10,
   borderRadius: 20,
   borderColor: "transparent",
   borderWidth: 2,

@@ -20,9 +20,10 @@ export const Text = styled("p")(
 );
 
 export const FlexBox = styled("div")(
-  {
+  (props) => ({
     display: "flex",
-  },
+    flexDirection: props.vertical ? "column" : "row",
+  }),
   compose(border, color, grid, flexbox, layout, position, shadow, space)
 );
 

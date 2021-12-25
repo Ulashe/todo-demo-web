@@ -10,8 +10,8 @@ const todoList = (payload) => ({
   _id: payload._id ? payload._id : generateID(),
   title: payload.title,
   todos: payload.todos
-    ? payload.todos.map((todo) => ({ text: todo.text, isCompleted: false }))
-    : undefined,
+    ? payload.todos.map((todo) => ({ _id: generateID(), text: todo.text, isCompleted: false }))
+    : [],
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 });
@@ -23,10 +23,14 @@ const slice = createSlice({
     addTodoList: (state, action) => {
       state.push(todoList(action.payload));
     },
-    addTodoToList: (state, action) => {
+    addTodo: (state, action) => {
       const index = state.findIndex((i) => i._id == action.payload._id);
       if (index + 1) {
-        state[index].todos.push({ text: action.payload.todo.text, isCompleted: false });
+        state[index].todos.push({
+          _id: generateID(),
+          text: action.payload.text,
+          isCompleted: false,
+        });
       }
     },
     updateTodoList: (state, action) => {
@@ -44,13 +48,13 @@ const slice = createSlice({
         }
       }
     },
-    removeTodoFromTodoList: (state, action) => {
+    removeTodo: (state, action) => {
       const index = state.findIndex((i) => i._id == action.payload._id);
       if (index + 1) {
         state[index].todos = state[index].todos.filter((i) => i != action.payload.todo._id);
       }
     },
-    deleteTodoList: (state, action) => {
+    removeTodoList: (state, action) => {
       const index = state.findIndex((i) => i._id == action.payload._id);
       if (index + 1) {
         return state.filter((i) => i._id != action.payload._id);
@@ -70,13 +74,7 @@ export const getLocalTodoList = (_id) =>
     (localTodoLists) => localTodoLists.find((i) => i._id == _id)
   );
 
-export const {
-  addTodoList,
-  addTodoToList,
-  deleteTodoList,
-  removeTodoFromTodoList,
-  updateTodoList,
-  updateTodo,
-} = slice.actions;
+export const { addTodoList, addTodo, removeTodoList, removeTodo, updateTodoList, updateTodo } =
+  slice.actions;
 
 export default slice.reducer;
