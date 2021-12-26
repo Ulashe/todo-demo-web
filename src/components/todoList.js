@@ -72,22 +72,24 @@ export default function TodoList({ todoList, addTodo, removeTodo }) {
             <div>Hiç todo yok</div>
           )}
         </FlexBox>
-        <FlexBox gridColumnGap={20} alignItems="center">
-          <Text color="blue.3" fontSize={18} fontWeight={500}>
-            Yeni todo:
-          </Text>
-          <form onSubmit={addTodo({ _id: todoList._id, text }, () => setText(""))}>
-            <TextInput value={text} onChange={setText} />
-          </form>
-          <TextButton
-            fontWeight={500}
-            variant="contained"
-            borderRadius={10}
-            onClick={addTodo({ _id: todoList._id, text }, () => setText(""))}
-          >
-            Ekle
-          </TextButton>
-        </FlexBox>
+        {todoList.todos.length > 3 ? (
+          <FlexBox gridColumnGap={20} alignItems="center">
+            <Text color="blue.3" fontSize={18} fontWeight={500}>
+              Yeni todo:
+            </Text>
+            <form onSubmit={addTodo({ _id: todoList._id, text }, () => setText(""))}>
+              <TextInput value={text} onChange={setText} />
+            </form>
+            <TextButton
+              fontWeight={500}
+              variant="contained"
+              borderRadius={10}
+              onClick={addTodo({ _id: todoList._id, text }, () => setText(""))}
+            >
+              Ekle
+            </TextButton>
+          </FlexBox>
+        ) : null}
       </FlexBox>
     </div>
   );
