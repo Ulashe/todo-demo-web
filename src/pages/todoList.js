@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAuth } from "../redux/reducers/authentication";
-import { addTodo as addTodoAction, getAllLocalTodoLists } from "../redux/reducers/localTodoLists";
+import {
+  addTodo,
+  getAllLocalTodoLists,
+  removeTodo,
+  updateTodo,
+} from "../redux/reducers/localTodoLists";
 import axios from "axios";
 import TodoList from "../components/todoList";
 
@@ -35,15 +40,34 @@ function LocalTodoList() {
   const localTodoLists = useSelector(getAllLocalTodoLists);
   const todoList = localTodoLists.find((i) => i._id == location.pathname.substring(1));
 
-  const addTodo =
+  const addTodoHandler =
     ({ _id, text }, callback) =>
     (e) => {
       e.preventDefault();
       if (callback) {
         callback();
       }
-      dispatch(addTodoAction({ _id, text }));
+      dispatch(addTodo({ _id, text }));
     };
 
-  return <TodoList todoList={todoList} addTodo={addTodo} />;
+  const removeTodoHandler =
+    ({ _id, todo }) =>
+    () => {
+      dispatch(removeTodo({ _id, todo }));
+    };
+
+  const updateTodoHandler =
+    ({ _id, todo }) =>
+    () => {
+      dispatch(updateTodo({ _id, todo }));
+    };
+
+  return (
+    <TodoList
+      todoList={todoList}
+      addTodoHandler={addTodoHandler}
+      removeTodoHandler={removeTodoHandler}
+      updateTodoHandler={updateTodoHandler}
+    />
+  );
 }

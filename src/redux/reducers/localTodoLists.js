@@ -51,7 +51,7 @@ const slice = createSlice({
     removeTodo: (state, action) => {
       const index = state.findIndex((i) => i._id == action.payload._id);
       if (index + 1) {
-        state[index].todos = state[index].todos.filter((i) => i != action.payload.todo._id);
+        state[index].todos = state[index].todos.filter((i) => i._id != action.payload.todo._id);
       }
     },
     removeTodoList: (state, action) => {
