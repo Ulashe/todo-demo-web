@@ -5,7 +5,7 @@ import { TextInput } from "./textInput";
 import { TextButton } from "./textButton";
 import { IconWrapper } from "./iconWrapper";
 import { ReactComponent as DeleteIcon } from "../assets/icons/delete.svg";
-import { hslAdjust } from "../utils/hslAdjust";
+import { hslaAdjust } from "../utils/hslaAdjust";
 
 export default function TodoList({
   todoList,
@@ -88,10 +88,10 @@ export default function TodoList({
                   center
                   iconSize="32px"
                   borderRadius="10px"
-                  hoverBg={(theme) => hslAdjust(theme.colors.blue[1], 50)}
+                  hoverBg={(theme) => hslaAdjust({ color: theme.colors.blue[1], lightness: 50 })}
                 >
                   <DeleteIcon />
-                </IconWrapper>{" "}
+                </IconWrapper>
               </FlexBox>
             ))
           ) : (

@@ -7,7 +7,8 @@ import { ReactComponent as DeleteIcon } from "../assets/icons/delete.svg";
 import { ModalButton } from "./modals/modalButton";
 import { TextButton } from "./textButton";
 import { NewTodoList } from "./modals/newTodoList";
-import { hslAdjust } from "../utils/hslAdjust";
+import { hslaAdjust } from "../utils/hslaAdjust";
+import { Confirm } from "./modals/confirm";
 
 export default function TodoLists({ todoLists, addTodoList, removeTodoList }) {
   return (
@@ -20,17 +21,26 @@ export default function TodoLists({ todoLists, addTodoList, removeTodoList }) {
               <Link to={todoList._id} flex={1} overflow="hidden">
                 <TodoListItem todoList={todoList} />
               </Link>
-              <IconWrapper
-                onClick={removeTodoList({ _id: todoList._id })}
-                cursor="pointer"
-                display="flex"
-                center
-                iconSize="32px"
-                borderRadius="10px"
-                hoverBg={(theme) => hslAdjust(theme.colors.blue[1], 50)}
+              <ModalButton
+                modalContent={
+                  <Confirm
+                    confirmButtonText="Sil"
+                    confirmContentText="Todo list'i silmek istediğinizden emin misiniz ?"
+                    onConfirm={removeTodoList({ _id: todoList._id })}
+                  />
+                }
               >
-                <DeleteIcon />
-              </IconWrapper>
+                <IconWrapper
+                  cursor="pointer"
+                  display="flex"
+                  center
+                  iconSize="32px"
+                  borderRadius="10px"
+                  hoverBg={(theme) => hslaAdjust({ color: theme.colors.blue[1], lightness: 50 })}
+                >
+                  <DeleteIcon />
+                </IconWrapper>
+              </ModalButton>
             </FlexBox>
           ))
         ) : (
