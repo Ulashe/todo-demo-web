@@ -1,3 +1,5 @@
+import { hslaAdjust } from "../utils/hslaAdjust";
+
 const space = []; // space reset for styled-system, this will be used later
 
 const sizes = { width: [0, 1] }; // space reset for styled-system, this will be used later
@@ -8,6 +10,4 @@ breakpoints.md = breakpoints[1];
 breakpoints.lg = breakpoints[2];
 breakpoints.xl = breakpoints[3];
 
-const baseTheme = { space, sizes, breakpoints };
-
-export default baseTheme;
+export default { space, sizes, breakpoints, hslaAdjust };

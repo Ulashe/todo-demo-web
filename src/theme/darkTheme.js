@@ -1,15 +1,17 @@
+import { hslaAdjust } from "../utils/hslaAdjust";
+
 const colors = {
   blue: [
-    "hsl(203, 63%, 20%)",
-    "hsl(205, 57%, 26%)",
-    "hsl(207, 53%, 32%)",
-    "hsl(208, 51%, 38%)",
-    "hsl(209, 49%, 43%)",
-    "hsl(207, 47%, 52%)",
-    "hsl(204, 62%, 60%)",
-    "hsl(202, 71%, 67%)",
-    "hsl(199, 86%, 74%)",
-    "hsl(191, 86%, 81%)",
+    "hsl(203, 63%, 20%,1)",
+    "hsl(205, 57%, 26%,1)",
+    "hsl(207, 53%, 32%,1)",
+    "hsl(208, 51%, 38%,1)",
+    "hsl(209, 49%, 43%,1)",
+    "hsl(207, 47%, 52%,1)",
+    "hsl(204, 62%, 60%,1)",
+    "hsl(202, 71%, 67%,1)",
+    "hsl(199, 86%, 74%,1)",
+    "hsl(191, 86%, 81%,1)",
   ],
 };
 
@@ -37,7 +39,7 @@ const textButton = {
     ...textButtonCommon,
     color: colors.blue[1],
     "&:hover": {
-      backgroundColor: `${colors.blue[1]}40`,
+      backgroundColor: hslaAdjust({ color: colors.blue[1], lgtAbs: 80 }),
     },
   },
   outlined: {
@@ -46,7 +48,7 @@ const textButton = {
     borderColor: colors.blue[1],
     "&:hover": {
       transform: "scale(0.98)",
-      backgroundColor: `${colors.blue[1]}40`,
+      backgroundColor: hslaAdjust({ color: colors.blue[1], lgtAbs: 80 }),
     },
   },
   contained: {
@@ -75,4 +77,5 @@ const lightTheme = {
   textButton,
   modal,
 };
+
 export default lightTheme;
