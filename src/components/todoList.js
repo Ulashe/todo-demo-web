@@ -6,6 +6,8 @@ import { TextButton } from "./textButton";
 import { IconWrapper } from "./iconWrapper";
 import { ReactComponent as DeleteIcon } from "../assets/icons/delete.svg";
 import { hslaAdjust } from "../utils/hslaAdjust";
+import { ProgressCircle } from "./progressCircle";
+import { ReactComponent as DoneIcon } from "../assets/icons/done.svg";
 
 export default function TodoList({
   todoList,
@@ -14,9 +16,12 @@ export default function TodoList({
   updateTodoHandler,
 }) {
   const [text, setText] = useState("");
-  const unCompletedTodosCount = todoList.todos.reduce(
-    (acc, item) => (item.isCompleted ? acc : ++acc),
-    0
+  const counts = todoList.todos.reduce(
+    (acc, item) => {
+      item.isCompleted ? acc.completed++ : acc.unCompleted++;
+      return acc;
+    },
+    { completed: 0, unCompleted: 0 }
   );
 
   return (
@@ -36,13 +41,29 @@ export default function TodoList({
           gridRowGap="20px"
           gridColumnGap="20px"
         >
-          <FlexBox alignItems="baseline">
+          <FlexBox alignItems="center">
             <Text color="blue.1" fontSize={28} fontWeight={500}>
               Todos
             </Text>
-            <Text color="blue.3" ml={20}>
-              Tamamlanmamış todo sayısı: {unCompletedTodosCount}
-            </Text>
+            <ProgressCircle
+              ml={20}
+              boxSize={50}
+              ratio={counts.completed / todoList.todos.length}
+              angleColor={(theme) => theme.colors.blue[3]}
+            >
+              {counts.unCompleted == 0 ? (
+                <IconWrapper iconSize={28}>
+                  <DoneIcon />
+                </IconWrapper>
+              ) : (
+                <div>
+                  <Text fontSize={20} textAlign="center">
+                    {counts.unCompleted}
+                  </Text>
+                  <Text fontSize={10}>kalan</Text>
+                </div>
+              )}
+            </ProgressCircle>
           </FlexBox>
           <FlexBox gridColumnGap={10} alignItems="center">
             <Text color="blue.3" fontSize={[18]} fontWeight={500}>
