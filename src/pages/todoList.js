@@ -10,7 +10,7 @@ import {
   updateTodoList,
 } from "../redux/reducers/localTodoLists";
 import axios from "axios";
-import TodoList from "../components/todoList";
+import { TodoList } from "../components";
 
 export default function TodoListPage() {
   const auth = useSelector(getAuth);

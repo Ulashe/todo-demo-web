@@ -1,19 +1,11 @@
 import React from "react";
-import { Heading } from "./heading";
-import { IconWrapper } from "./iconWrapper";
+import { Heading, IconWrapper, ProgressCircle, TextButton, TodoListItem } from "./";
 import { FlexBox, Link, Text } from "./styled-components";
-import { TodoListItem } from "./todoListItem";
-import { ReactComponent as DeleteIcon } from "../assets/icons/delete.svg";
-import { ModalButton } from "./modals/modalButton";
-import { TextButton } from "./textButton";
-import { NewTodoList } from "./modals/newTodoList";
 import { hslaAdjust } from "../utils/hslaAdjust";
-import { Confirm } from "./modals/confirm";
-import { ProgressCircle } from "../components/progressCircle";
-import { ReactComponent as DoneIcon } from "../assets/icons/done.svg";
-import { ReactComponent as MoreIcon } from "../assets/icons/more.svg";
+import { DeleteIcon, DoneIcon, MoreIcon } from "../assets/icons";
+import { Confirm, ModalButton, NewTodoList } from "./modals";
 
-export default function TodoLists({ todoLists, addTodoListHandler, removeTodoListHandler }) {
+export function TodoLists({ todoLists, addTodoListHandler, removeTodoListHandler }) {
   return (
     <div>
       <Heading>Todo Lists</Heading>

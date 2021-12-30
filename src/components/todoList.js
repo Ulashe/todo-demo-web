@@ -1,20 +1,11 @@
 import React, { useState } from "react";
-import { Heading } from "./heading";
+import { Heading, IconWrapper, ProgressCircle, TextButton, TextInput } from "./";
 import { Box, FlexBox, Text } from "./styled-components";
-import { TextInput } from "./textInput";
-import { TextButton } from "./textButton";
-import { IconWrapper } from "./iconWrapper";
-import { ReactComponent as DeleteIcon } from "../assets/icons/delete.svg";
 import { hslaAdjust } from "../utils/hslaAdjust";
-import { ProgressCircle } from "./progressCircle";
-import { ReactComponent as DoneIcon } from "../assets/icons/done.svg";
-import { ReactComponent as EditIcon } from "../assets/icons/edit.svg";
-import { ReactComponent as MoreIcon } from "../assets/icons/more.svg";
-import { ModalButton } from "./modals/modalButton";
-import { EditTodoText } from "./modals/editTodoText";
-import { EditTodoListTitle } from "./modals/editTodoListTitle";
+import { DeleteIcon, DoneIcon, EditIcon, MoreIcon } from "../assets/icons";
+import { EditTodoText, EditTodoListTitle, ModalButton } from "./modals";
 
-export default function TodoList({
+export function TodoList({
   todoList,
   addTodoHandler,
   removeTodoHandler,

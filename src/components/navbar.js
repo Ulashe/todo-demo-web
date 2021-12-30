@@ -3,11 +3,10 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { getAuth } from "../redux/reducers/authentication";
 import { IconWrapper } from "./iconWrapper";
-import { ReactComponent as AccountIcon } from "../assets/icons/account.svg";
-import { ReactComponent as LoginIcon } from "../assets/icons/login.svg";
 import { useNavigate } from "react-router";
+import { AccountIcon, LoginIcon } from "../assets/icons";
 
-export default function Navbar() {
+export function Navbar() {
   const auth = useSelector(getAuth);
   const [iconClicked, setIconClicked] = React.useState(false);
   const navigate = useNavigate();

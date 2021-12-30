@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../components/navbar";
+import { Navbar } from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { getAuth, signIn, signOutThunk } from "../redux/reducers/authentication";
 import axios from "axios";
