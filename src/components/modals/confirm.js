@@ -22,8 +22,8 @@ export function Confirm({
         </TextButton>,
       ]}
     >
-      <Box p={10}>
-        <Text>{confirmContentText}</Text>
+      <Box p={20}>
+        <Text fontSize={20}>{confirmContentText}</Text>
       </Box>
     </ModalFormLayout>
   );

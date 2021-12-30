@@ -8,12 +8,18 @@ import { ReactComponent as DeleteIcon } from "../assets/icons/delete.svg";
 import { hslaAdjust } from "../utils/hslaAdjust";
 import { ProgressCircle } from "./progressCircle";
 import { ReactComponent as DoneIcon } from "../assets/icons/done.svg";
+import { ReactComponent as EditIcon } from "../assets/icons/edit.svg";
+import { ReactComponent as MoreIcon } from "../assets/icons/more.svg";
+import { ModalButton } from "./modals/modalButton";
+import { EditTodoText } from "./modals/editTodoText";
+import { EditTodoListTitle } from "./modals/editTodoListTitle";
 
 export default function TodoList({
   todoList,
   addTodoHandler,
   removeTodoHandler,
   updateTodoHandler,
+  updateTodoListHandler,
 }) {
   const [text, setText] = useState("");
   const counts = todoList.todos.reduce(
@@ -23,10 +29,39 @@ export default function TodoList({
     },
     { completed: 0, unCompleted: 0 }
   );
+  const addTodo = (e) => {
+    e.preventDefault();
+    if (text.length > 0) {
+      addTodoHandler({ _id: todoList._id, text });
+      setText("");
+    }
+  };
+  const removeTodo = (todo) => () => removeTodoHandler({ _id: todoList._id, todo });
 
   return (
     <div>
-      <Heading>{todoList.title}</Heading>
+      <FlexBox gridColumnGap={20}>
+        <Heading>{todoList.title}</Heading>
+        <ModalButton
+          modalContent={
+            <EditTodoListTitle todoList={todoList} updateTodoListHandler={updateTodoListHandler} />
+          }
+        >
+          <IconWrapper
+            cursor="pointer"
+            display="flex"
+            center
+            iconSize={32}
+            borderRadius={10}
+            bg="blue.1"
+            iconFill="white"
+            p={2}
+            hoverBg={(theme) => theme.colors.blue[5]}
+          >
+            <EditIcon />
+          </IconWrapper>
+        </ModalButton>
+      </FlexBox>
       <FlexBox mt={20} vertical gridRowGap={20}>
         <Text color="blue.3" fontSize={[14, 18]}>
           Oluşturulma tarihi: {new Date(todoList.createdAt).toLocaleString()}
@@ -48,10 +83,14 @@ export default function TodoList({
             <ProgressCircle
               ml={20}
               boxSize={50}
-              ratio={counts.completed / todoList.todos.length}
+              ratio={todoList.todos.length > 0 ? counts.completed / todoList.todos.length : 0}
               angleColor={(theme) => theme.colors.blue[3]}
             >
-              {counts.unCompleted == 0 ? (
+              {todoList.todos.length == 0 ? (
+                <IconWrapper iconSize={28}>
+                  <MoreIcon />
+                </IconWrapper>
+              ) : counts.unCompleted == 0 ? (
                 <IconWrapper iconSize={28}>
                   <DoneIcon />
                 </IconWrapper>
@@ -69,15 +108,10 @@ export default function TodoList({
             <Text color="blue.3" fontSize={[18]} fontWeight={500}>
               Yeni todo:
             </Text>
-            <form onSubmit={addTodoHandler({ _id: todoList._id, text }, () => setText(""))}>
+            <form onSubmit={addTodo}>
               <TextInput value={text} onChange={setText} />
             </form>
-            <TextButton
-              fontWeight={500}
-              variant="contained"
-              borderRadius={10}
-              onClick={addTodoHandler({ _id: todoList._id, text }, () => setText(""))}
-            >
+            <TextButton fontWeight={500} variant="contained" borderRadius={10} onClick={addTodo}>
               Ekle
             </TextButton>
           </FlexBox>
@@ -85,12 +119,14 @@ export default function TodoList({
         <FlexBox vertical gridRowGap={10}>
           {todoList.todos.length > 0 ? (
             todoList.todos.map((todo) => (
-              <FlexBox key={todo._id}>
+              <FlexBox key={todo._id} gridColumnGap={5}>
                 <TextButton
-                  onClick={updateTodoHandler({
-                    _id: todoList._id,
-                    todo: { ...todo, isCompleted: !todo.isCompleted },
-                  })}
+                  onClick={() =>
+                    updateTodoHandler({
+                      _id: todoList._id,
+                      todo: { ...todo, isCompleted: !todo.isCompleted },
+                    })
+                  }
                   flex={1}
                   textAlign="left"
                   style={{
@@ -102,8 +138,28 @@ export default function TodoList({
                 >
                   {todo.text}
                 </TextButton>
+                <ModalButton
+                  modalContent={
+                    <EditTodoText
+                      todoListID={todoList._id}
+                      todo={todo}
+                      updateTodoHandler={updateTodoHandler}
+                    />
+                  }
+                >
+                  <IconWrapper
+                    cursor="pointer"
+                    display="flex"
+                    center
+                    iconSize={32}
+                    borderRadius={10}
+                    hoverBg={(theme) => hslaAdjust({ color: theme.colors.blue[1], lightness: 50 })}
+                  >
+                    <EditIcon />
+                  </IconWrapper>
+                </ModalButton>
                 <IconWrapper
-                  onClick={removeTodoHandler({ _id: todoList._id, todo })}
+                  onClick={removeTodo(todo)}
                   cursor="pointer"
                   display="flex"
                   center
@@ -124,15 +180,10 @@ export default function TodoList({
             <Text color="blue.3" fontSize={18} fontWeight={500}>
               Yeni todo:
             </Text>
-            <form onSubmit={addTodoHandler({ _id: todoList._id, text }, () => setText(""))}>
+            <form onSubmit={addTodo}>
               <TextInput value={text} onChange={setText} />
             </form>
-            <TextButton
-              fontWeight={500}
-              variant="contained"
-              borderRadius={10}
-              onClick={addTodoHandler({ _id: todoList._id, text }, () => setText(""))}
-            >
+            <TextButton fontWeight={500} variant="contained" borderRadius={10} onClick={addTodo}>
               Ekle
             </TextButton>
           </FlexBox>

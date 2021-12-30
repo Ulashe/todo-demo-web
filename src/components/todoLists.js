@@ -11,8 +11,9 @@ import { hslaAdjust } from "../utils/hslaAdjust";
 import { Confirm } from "./modals/confirm";
 import { ProgressCircle } from "../components/progressCircle";
 import { ReactComponent as DoneIcon } from "../assets/icons/done.svg";
+import { ReactComponent as MoreIcon } from "../assets/icons/more.svg";
 
-export default function TodoLists({ todoLists, addTodoList, removeTodoList }) {
+export default function TodoLists({ todoLists, addTodoListHandler, removeTodoListHandler }) {
   return (
     <div>
       <Heading>Todo Lists</Heading>
@@ -26,13 +27,18 @@ export default function TodoLists({ todoLists, addTodoList, removeTodoList }) {
               },
               { completed: 0, unCompleted: 0 }
             );
+            const removeTodoList = () => removeTodoListHandler({ _id: todoList._id });
             return (
-              <FlexBox key={todoList._id} gridColumnGap="5px" alignItems="center">
+              <FlexBox key={todoList._id} gridColumnGap="5px" alignItems="stretch">
                 <ProgressCircle
-                  ratio={counts.completed / todoList.todos.length}
+                  ratio={todoList.todos.length > 0 ? counts.completed / todoList.todos.length : 0}
                   angleColor={(theme) => theme.colors.blue[3]}
                 >
-                  {counts.unCompleted == 0 ? (
+                  {todoList.todos.length == 0 ? (
+                    <IconWrapper iconSize={32}>
+                      <MoreIcon />
+                    </IconWrapper>
+                  ) : counts.unCompleted == 0 ? (
                     <IconWrapper iconSize={32}>
                       <DoneIcon />
                     </IconWrapper>
@@ -53,7 +59,7 @@ export default function TodoLists({ todoLists, addTodoList, removeTodoList }) {
                     <Confirm
                       confirmButtonText="Sil"
                       confirmContentText="Todo list'i silmek istediğinizden emin misiniz ?"
-                      onConfirm={removeTodoList({ _id: todoList._id })}
+                      onConfirm={removeTodoList}
                     />
                   }
                 >
@@ -75,7 +81,7 @@ export default function TodoLists({ todoLists, addTodoList, removeTodoList }) {
           <div>Hiç todo list yok</div>
         )}
       </FlexBox>
-      <ModalButton modalContent={<NewTodoList addTodoList={addTodoList} />}>
+      <ModalButton modalContent={<NewTodoList addTodoListHandler={addTodoListHandler} />}>
         <TextButton variant="outlined" p={20}>
           Yeni bir Todo List oluştur
         </TextButton>

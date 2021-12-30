@@ -9,7 +9,7 @@ export function TodoListItem({ title, counts }) {
       </Container>
       <FlexBox px={10} mt={-2}>
         <Box bg="blue.1" height={2} flex={counts.completed > 0 ? counts.completed : 1}></Box>
-        <Box bg="blue.9" height={2} flex={counts.completed > 0 ? counts.unCompleted : 9}></Box>
+        <Box bg="blue.7" height={2} flex={counts.completed > 0 ? counts.unCompleted : 9}></Box>
       </FlexBox>
     </div>
   );
@@ -17,9 +17,6 @@ export function TodoListItem({ title, counts }) {
 
 const Container = styled("div")((props) => ({
   flex: 1,
-  display: "flex",
-  flexDirection: "column",
-  rowGap: "5px",
   backgroundColor: props.theme.todoListItem.bg,
   padding: "20px",
   borderRadius: "10px",

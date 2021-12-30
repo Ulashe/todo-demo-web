@@ -7,6 +7,7 @@ import {
   getAllLocalTodoLists,
   removeTodo,
   updateTodo,
+  updateTodoList,
 } from "../redux/reducers/localTodoLists";
 import axios from "axios";
 import TodoList from "../components/todoList";
@@ -40,27 +41,21 @@ function LocalTodoList() {
   const localTodoLists = useSelector(getAllLocalTodoLists);
   const todoList = localTodoLists.find((i) => i._id == location.pathname.substring(1));
 
-  const addTodoHandler =
-    ({ _id, text }, callback) =>
-    (e) => {
-      e.preventDefault();
-      if (callback) {
-        callback();
-      }
-      dispatch(addTodo({ _id, text }));
-    };
+  const addTodoHandler = ({ _id, text }) => {
+    dispatch(addTodo({ _id, text }));
+  };
 
-  const removeTodoHandler =
-    ({ _id, todo }) =>
-    () => {
-      dispatch(removeTodo({ _id, todo }));
-    };
+  const removeTodoHandler = ({ _id, todo }) => {
+    dispatch(removeTodo({ _id, todo }));
+  };
 
-  const updateTodoHandler =
-    ({ _id, todo }) =>
-    () => {
-      dispatch(updateTodo({ _id, todo }));
-    };
+  const updateTodoHandler = ({ _id, todo }) => {
+    dispatch(updateTodo({ _id, todo }));
+  };
+
+  const updateTodoListHandler = (todoList) => {
+    dispatch(updateTodoList(todoList));
+  };
 
   return (
     <TodoList
@@ -68,6 +63,7 @@ function LocalTodoList() {
       addTodoHandler={addTodoHandler}
       removeTodoHandler={removeTodoHandler}
       updateTodoHandler={updateTodoHandler}
+      updateTodoListHandler={updateTodoListHandler}
     />
   );
 }

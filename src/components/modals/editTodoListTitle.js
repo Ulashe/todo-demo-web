@@ -4,21 +4,19 @@ import { TextButton } from "../textButton";
 import { Box, Text } from "../styled-components";
 import { TextInput } from "../textInput";
 
-export function NewTodoList({ openModal, closeModal, addTodoListHandler }) {
-  const [title, setTitle] = useState("");
-  const addTodoList = (e) => {
+export function EditTodoListTitle({ openModal, closeModal, todoList, updateTodoListHandler }) {
+  const [title, setTitle] = useState(todoList.title);
+  const editTodoList = (e) => {
     e.preventDefault();
-    if (title.length > 0) {
-      addTodoListHandler({ title });
-      closeModal();
-    }
+    updateTodoListHandler({ ...todoList, title });
+    closeModal();
   };
   return (
     <ModalFormLayout
-      heading="Yeni bir todo list oluşturun"
+      heading="TodoList başlığını düzenle"
       footer={[
-        <TextButton key={1} variant="text" py={10} onClick={addTodoList}>
-          Oluştur
+        <TextButton key={1} variant="text" py={10} onClick={editTodoList}>
+          Kaydet
         </TextButton>,
         <TextButton key={2} variant="text" py={10} onClick={closeModal}>
           İptal
@@ -27,9 +25,9 @@ export function NewTodoList({ openModal, closeModal, addTodoListHandler }) {
       width={["80%", "400px"]}
     >
       <Box p={10}>
-        <form onSubmit={addTodoList}>
+        <form onSubmit={editTodoList}>
           <Text mb={10} mt={5} fontSize={20}>
-            Todo List için başlık girin:
+            TodoList başlığını düzenleyin:
           </Text>
           <TextInput autoFocus color="black" fontSize={16} value={title} onChange={setTitle} />
         </form>
