@@ -23,6 +23,8 @@ export const FlexBox = styled("div")(
   (props) => ({
     display: "flex",
     flexDirection: props.vertical ? "column" : "row",
+    justifyContent: props.center ? "center" : undefined,
+    alignItems: props.center ? "center" : undefined,
   }),
   compose(border, color, grid, flexbox, layout, position, shadow, space)
 );

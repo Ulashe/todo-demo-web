@@ -5,32 +5,41 @@ import { getAuth } from "../redux/reducers/authentication";
 import { IconWrapper } from "./iconWrapper";
 import { useNavigate } from "react-router";
 import { AccountIcon, LoginIcon } from "../assets/icons";
+import { FlexBox, Text } from "./styled-components";
+import { useOnClickOutside } from "../utils/useOnClickOutside";
 
 export function Navbar() {
   const auth = useSelector(getAuth);
-  const [iconClicked, setIconClicked] = React.useState(false);
   const navigate = useNavigate();
   const goToHomepage = () => navigate("/");
+  const dropdownRef = React.useRef();
+  const buttonRef = React.useRef();
+  const [isDropdownVisible, setIsDropdownVisible] = React.useState(false);
+  const closeDropdown = React.useCallback(() => setIsDropdownVisible(false), []);
+  const iconOnClick = () => setIsDropdownVisible((s) => !s);
+  useOnClickOutside({ buttonRef, handler: closeDropdown });
 
   return (
     <Outer>
       <Inner>
-        <FlexBox>
+        <FlexBox center justifyContent="space-between">
           <Heading style={{ cursor: "pointer" }} onClick={goToHomepage}>
             To Do Demo
           </Heading>
-          <IconWithText>
-            <IconText>Giriş Yapın</IconText>
-            <IconWrapper
-              iconFill={(theme) => theme.navbar.iconColor}
-              iconSize="36px"
-              onClick={() => setIconClicked((s) => !s)}
-            >
-              {auth.refreshToken ? <AccountIcon /> : <LoginIcon />}
-            </IconWrapper>
-          </IconWithText>
+          <IconWrapper
+            ref={buttonRef}
+            iconFill={(theme) => theme.navbar.iconColor}
+            iconSize="36px"
+            onClick={iconOnClick}
+            position="relative"
+            hoverBg={(theme) => theme.colors.blue[3]}
+            cursor="pointer"
+            borderRadius={10}
+          >
+            {auth.refreshToken ? <AccountIcon /> : <LoginIcon />}
+            {isDropdownVisible ? <Dropdown>Lorem ipsum</Dropdown> : null}
+          </IconWrapper>
         </FlexBox>
-        {iconClicked ? <Dropdown>Lorem ipsum</Dropdown> : null}
       </Inner>
     </Outer>
   );
@@ -43,14 +52,7 @@ const Outer = styled("div")({
 const Inner = styled("div")({
   maxWidth: ({ theme }) => theme.maxWidth,
   margin: "auto",
-  position: "relative",
   padding: "0 10px",
-});
-
-const FlexBox = styled("div")({
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
 });
 
 const Heading = styled("div")({
@@ -61,27 +63,10 @@ const Heading = styled("div")({
 
 const Dropdown = styled("div")({
   position: "absolute",
-  margin: 5,
+  margin: 0,
   borderRadius: 10,
   right: 0,
   backgroundColor: "#eee",
   color: "#666",
   padding: 15,
-});
-
-const IconWithText = styled("div")`
-  display: flex;
-  align-items: center;
-  line-height: 0;
-  padding: 4px 8px;
-  border-radius: 10px;
-  cursor: pointer;
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.blue[3]};
-  }
-`;
-
-const IconText = styled("p")({
-  fontSize: 16,
-  color: ({ theme }) => theme.colors.blue[8],
 });
