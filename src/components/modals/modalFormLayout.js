@@ -56,7 +56,6 @@ const Footer = styled("div")(
     borderTopWidth: "1px",
     display: "flex",
     flexDirection: "row-reverse",
-    color: "green",
   }),
   flexbox
 );

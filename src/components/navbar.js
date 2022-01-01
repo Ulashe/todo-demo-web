@@ -5,8 +5,9 @@ import { getAuth } from "../redux/reducers/authentication";
 import { IconWrapper } from "./iconWrapper";
 import { useNavigate } from "react-router";
 import { AccountIcon, LoginIcon } from "../assets/icons";
-import { Box, FlexBox, Text } from "./styled-components";
+import { Box, FlexBox } from "./styled-components";
 import { useOnClickOutside } from "../utils/useOnClickOutside";
+import { NavbarDropdown } from "./";
 
 export function Navbar() {
   const auth = useSelector(getAuth);
@@ -38,7 +39,7 @@ export function Navbar() {
             >
               {auth.refreshToken ? <AccountIcon /> : <LoginIcon />}
             </IconWrapper>
-            {isDropdownVisible ? <Dropdown ref={dropdownRef}>Lorem ipsum</Dropdown> : null}
+            {isDropdownVisible ? <NavbarDropdown containerRef={dropdownRef} auth={auth} /> : null}
           </Box>
         </FlexBox>
       </Inner>
@@ -59,15 +60,5 @@ const Inner = styled("div")({
 const Heading = styled("div")({
   color: "white",
   fontSize: 24,
-  padding: 15,
-});
-
-const Dropdown = styled("div")({
-  position: "absolute",
-  margin: 0,
-  borderRadius: 10,
-  right: 0,
-  backgroundColor: "#eee",
-  color: "#666",
   padding: 15,
 });

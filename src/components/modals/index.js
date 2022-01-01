@@ -5,3 +5,4 @@ export { NewTodoList } from "./newTodoList";
 export { Confirm } from "./confirm";
 export { EditTodoListTitle } from "./editTodoListTitle";
 export { EditTodoText } from "./editTodoText";
+export { SignUp } from "./signUp";
