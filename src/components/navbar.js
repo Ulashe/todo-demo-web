@@ -5,7 +5,7 @@ import { getAuth } from "../redux/reducers/authentication";
 import { IconWrapper } from "./iconWrapper";
 import { useNavigate } from "react-router";
 import { AccountIcon, LoginIcon } from "../assets/icons";
-import { FlexBox, Text } from "./styled-components";
+import { Box, FlexBox, Text } from "./styled-components";
 import { useOnClickOutside } from "../utils/useOnClickOutside";
 
 export function Navbar() {
@@ -17,7 +17,7 @@ export function Navbar() {
   const [isDropdownVisible, setIsDropdownVisible] = React.useState(false);
   const closeDropdown = React.useCallback(() => setIsDropdownVisible(false), []);
   const iconOnClick = () => setIsDropdownVisible((s) => !s);
-  useOnClickOutside({ buttonRef, handler: closeDropdown });
+  useOnClickOutside({ buttonRef, dropdownRef, handler: closeDropdown });
 
   return (
     <Outer>
@@ -26,19 +26,20 @@ export function Navbar() {
           <Heading style={{ cursor: "pointer" }} onClick={goToHomepage}>
             To Do Demo
           </Heading>
-          <IconWrapper
-            ref={buttonRef}
-            iconFill={(theme) => theme.navbar.iconColor}
-            iconSize="36px"
-            onClick={iconOnClick}
-            position="relative"
-            hoverBg={(theme) => theme.colors.blue[3]}
-            cursor="pointer"
-            borderRadius={10}
-          >
-            {auth.refreshToken ? <AccountIcon /> : <LoginIcon />}
-            {isDropdownVisible ? <Dropdown>Lorem ipsum</Dropdown> : null}
-          </IconWrapper>
+          <Box position="relative">
+            <IconWrapper
+              ref={buttonRef}
+              iconFill={(theme) => theme.navbar.iconColor}
+              iconSize="36px"
+              onClick={iconOnClick}
+              hoverBg={(theme) => theme.colors.blue[3]}
+              cursor="pointer"
+              borderRadius={10}
+            >
+              {auth.refreshToken ? <AccountIcon /> : <LoginIcon />}
+            </IconWrapper>
+            {isDropdownVisible ? <Dropdown ref={dropdownRef}>Lorem ipsum</Dropdown> : null}
+          </Box>
         </FlexBox>
       </Inner>
     </Outer>

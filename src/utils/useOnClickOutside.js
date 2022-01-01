@@ -1,11 +1,15 @@
 import { useEffect } from "react";
 
-export function useOnClickOutside({ buttonRef, handler }) {
+export function useOnClickOutside({ buttonRef, dropdownRef, handler }) {
   useEffect(
     () => {
       const listener = (event) => {
         // Do nothing if there is a button and if clicking button ref's element or descenden elements
         if (!buttonRef.current || buttonRef.current.contains(event.target)) {
+          return;
+        }
+        // If you don't want the dropdown to close when clicked, assign the dropdown ref to the dropdown component.
+        if (dropdownRef && (!dropdownRef.current || dropdownRef.current.contains(event.target))) {
           return;
         }
         handler(event);
@@ -23,6 +27,6 @@ export function useOnClickOutside({ buttonRef, handler }) {
     // ... callback/cleanup to run every render. It's not a big deal ...
     // ... but to optimize you can wrap handler in useCallback before ...
     // ... passing it into this hook.
-    [buttonRef, handler]
+    [buttonRef, dropdownRef, handler]
   );
 }
