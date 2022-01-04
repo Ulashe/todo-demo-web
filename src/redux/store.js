@@ -18,13 +18,7 @@ const persistConfig = {
   storage,
 };
 
-const persisted = persistReducer(persistConfig, rootReducer);
-const persistedReducer = (state, action) => {
-  if (action.type == "authentication/signOut") {
-    state = undefined;
-  }
-  return persisted(state, action);
-};
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
   reducer: persistedReducer,

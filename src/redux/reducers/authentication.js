@@ -3,7 +3,10 @@ import axios from "axios";
 
 export const signOutThunk = () => (dispatch, getState) => {
   const { refreshToken } = getState().authentication;
-  axios.delete(`/auth/refreshtokens/${refreshToken}`).then((res) => dispatch(signOut()));
+  axios
+    .delete(`/auth/refreshtokens/${refreshToken}`)
+    .then((res) => dispatch(signOut()))
+    .catch(() => dispatch(signOut()));
 };
 
 const initialState = {
