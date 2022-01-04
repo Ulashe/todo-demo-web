@@ -1,7 +1,7 @@
 import React from "react";
 import { Navbar } from "../components";
 import { useDispatch, useSelector } from "react-redux";
-import { getAuth, signIn, signOutThunk } from "../redux/reducers/authentication";
+import { getAuth, refresh, signOutThunk } from "../redux/reducers/authentication";
 import axios from "axios";
 import styled from "styled-components";
 
@@ -21,7 +21,7 @@ export default function Layout({ children }) {
       intervalID = setInterval(() => {
         axios
           .get(`/auth/accessToken/${auth.refreshToken}`)
-          .then((res) => dispatch(signIn(res.data)))
+          .then((res) => dispatch(refresh(res.data)))
           .catch(() => dispatch(signOutThunk));
       }, 1000 * auth.expiresInSeconds - 10000);
     } else {

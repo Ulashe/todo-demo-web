@@ -23,17 +23,17 @@ function RemoteTodoLists() {
   const [todoLists, setTodoLists] = useState([]);
 
   useEffect(() => {
-    axios.get("/api/todolists").then((res) => setTodoLists(res.data));
+    axios.get("/todolists").then((res) => setTodoLists(res.data));
   }, []);
 
   const addTodoListHandler = ({ title }) => {
-    axios.post("/api/todolists", { title }).then((res) => {
+    axios.post("/todolists", { title }).then((res) => {
       setTodoLists((todoLists) => [...todoLists, res.data]);
     });
   };
   const removeTodoListHandler = ({ _id }) => {
     axios
-      .delete(`/api/todolists/${_id}`)
+      .delete(`/todolists/${_id}`)
       .then(() => setTodoLists((todoLists) => todoLists.filter((i) => i._id != _id)));
   };
 
