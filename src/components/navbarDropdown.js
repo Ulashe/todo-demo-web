@@ -1,32 +1,36 @@
 import React from "react";
-import { Box, Text } from "./styled-components";
+import { Box, FlexBox, Text } from "./styled-components";
 import { useTheme } from "styled-components";
 import { ModalButton, SignUp } from "./modals";
+import { TextButton } from "./";
 
-export function NavbarDropdown({ containerRef, auth }) {
+export function NavbarDropdown({ containerRef, auth, closeDropdown }) {
   const theme = useTheme();
+
   return (
-    <Box
+    <FlexBox
       ref={containerRef}
+      flexDirection="column"
+      gridRowGap={10}
       position="absolute"
       right={0}
       mt={15}
       p={10}
       borderRadius={10}
       style={{ whiteSpace: "nowrap" }}
-      bg={theme.hslaAdjust({ color: theme.colors.blue[0], lightness: 65 })}
+      bg={theme.hslaAdjust({ color: theme.colors.blue[0], lightness: 70 })}
     >
       {auth.accessToken ? (
         <Text color="blue.0">{auth.email}</Text>
       ) : (
         <>
-          <Text color="blue.0">Giriş yapın</Text>
-          <hr></hr>
+          <TextButton variant="text">Giriş yapın</TextButton>
+          <Box height="1px" width="100%" bg="blue.8" />
           <ModalButton modalContent={<SignUp />}>
-            <Text color="blue.0">Üye olun</Text>
+            <TextButton variant="text">Üye olun</TextButton>
           </ModalButton>
         </>
       )}
-    </Box>
+    </FlexBox>
   );
 }

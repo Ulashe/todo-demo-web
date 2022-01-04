@@ -42,7 +42,7 @@ export { store, persistor };
 
 axios.interceptors.request.use(
   (config) => {
-    const { accessToken } = store.getState().auth;
+    const { accessToken } = store.getState().authentication;
     if (accessToken) {
       config.headers["Authorization"] = accessToken;
     }

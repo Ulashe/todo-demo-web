@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { border, color, compose, layout, space, typography } from "styled-system";
 
-export const TextInput = styled("input").attrs(({ value, onChange }) => ({
-  type: "text",
+export const TextInput = styled("input").attrs(({ type = "text", value, onChange }) => ({
+  type,
   value,
   onChange: (e) => onChange(e.target.value),
 }))(

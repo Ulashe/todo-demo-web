@@ -10,7 +10,7 @@ import Layout from "./pages/layout";
 import TodoLists from "./pages/todoLists";
 import TodoList from "./pages/todoList";
 
-axios.defaults.baseURL = "http://192.168.1.104:3000/api";
+axios.defaults.baseURL = "http://192.168.1.104:3100/api";
 
 export default function App() {
   const theme = store.getState().theme;

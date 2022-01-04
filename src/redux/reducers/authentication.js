@@ -2,7 +2,7 @@ import { createSelector, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const signOutThunk = () => (dispatch, getState) => {
-  const { refreshToken } = getState().auth;
+  const { refreshToken } = getState().authentication;
   axios.delete(`/auth/refreshtokens/${refreshToken}`).then((res) => dispatch(signOut()));
 };
 

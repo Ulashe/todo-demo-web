@@ -13,11 +13,11 @@ export function Navbar() {
   const auth = useSelector(getAuth);
   const navigate = useNavigate();
   const goToHomepage = () => navigate("/");
-  const dropdownRef = React.useRef();
   const buttonRef = React.useRef();
+  const dropdownRef = React.useRef();
   const [isDropdownVisible, setIsDropdownVisible] = React.useState(false);
   const closeDropdown = React.useCallback(() => setIsDropdownVisible(false), []);
-  const iconOnClick = () => setIsDropdownVisible((s) => !s);
+  const openDropdown = () => setIsDropdownVisible((s) => !s);
   useOnClickOutside({ buttonRef, dropdownRef, handler: closeDropdown });
 
   return (
@@ -32,14 +32,20 @@ export function Navbar() {
               ref={buttonRef}
               iconFill={(theme) => theme.navbar.iconColor}
               iconSize="36px"
-              onClick={iconOnClick}
+              onClick={openDropdown}
               hoverBg={(theme) => theme.colors.blue[3]}
               cursor="pointer"
               borderRadius={10}
             >
               {auth.refreshToken ? <AccountIcon /> : <LoginIcon />}
             </IconWrapper>
-            {isDropdownVisible ? <NavbarDropdown containerRef={dropdownRef} auth={auth} /> : null}
+            {isDropdownVisible ? (
+              <NavbarDropdown
+                containerRef={dropdownRef}
+                auth={auth}
+                closeDropdown={closeDropdown}
+              />
+            ) : null}
           </Box>
         </FlexBox>
       </Inner>
