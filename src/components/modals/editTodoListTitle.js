@@ -24,13 +24,11 @@ export function EditTodoListTitle({ openModal, closeModal, todoList, updateTodoL
       ]}
       width={["80%", "400px"]}
     >
-      <Box p={10}>
-        <form onSubmit={editTodoList}>
-          <Text mb={10} mt={5} fontSize={20}>
-            TodoList başlığını düzenleyin:
-          </Text>
-          <TextInput autoFocus color="black" fontSize={16} value={title} onChange={setTitle} />
-        </form>
+      <Box as="form" onSubmit={editTodoList} p={10}>
+        <Text mb={10} mt={5} fontSize={20}>
+          TodoList başlığını düzenleyin:
+        </Text>
+        <TextInput autoFocus color="black" fontSize={16} value={title} onChange={setTitle} />
       </Box>
     </ModalFormLayout>
   );

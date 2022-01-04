@@ -26,13 +26,11 @@ export function NewTodoList({ openModal, closeModal, addTodoListHandler }) {
       ]}
       width={["80%", "400px"]}
     >
-      <Box p={10}>
-        <form onSubmit={addTodoList}>
-          <Text mb={10} mt={5} fontSize={20}>
-            Todo List için başlık girin:
-          </Text>
-          <TextInput autoFocus color="black" fontSize={16} value={title} onChange={setTitle} />
-        </form>
+      <Box as="form" onSubmit={addTodoList} p={10}>
+        <Text mb={10} mt={5} fontSize={20}>
+          Todo List için başlık girin:
+        </Text>
+        <TextInput autoFocus color="black" fontSize={16} value={title} onChange={setTitle} />
       </Box>
     </ModalFormLayout>
   );

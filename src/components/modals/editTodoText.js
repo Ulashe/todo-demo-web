@@ -24,13 +24,11 @@ export function EditTodoText({ openModal, closeModal, todoListID, todo, updateTo
       ]}
       width={["80%", "400px"]}
     >
-      <Box p={10}>
-        <form onSubmit={editTodo}>
-          <Text mb={10} mt={5} fontSize={20}>
-            Todo text'ini düzenleyin:
-          </Text>
-          <TextInput autoFocus color="black" fontSize={16} value={text} onChange={setText} />
-        </form>
+      <Box as="form" onSubmit={editTodo} p={10}>
+        <Text mb={10} mt={5} fontSize={20}>
+          Todo text'ini düzenleyin:
+        </Text>
+        <TextInput autoFocus color="black" fontSize={16} value={text} onChange={setText} />
       </Box>
     </ModalFormLayout>
   );
