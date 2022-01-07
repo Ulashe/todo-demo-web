@@ -6,7 +6,7 @@ import { IconWrapper } from "./iconWrapper";
 import { useNavigate } from "react-router";
 import { AccountIcon, LoginIcon } from "../assets/icons";
 import { Box, FlexBox } from "./styled-components";
-import { useOnClickOutside } from "../utils/useOnClickOutside";
+import { useOnClickOutside } from "../utils/hooks/useOnClickOutside";
 import { NavbarDropdown } from "./";
 
 export function Navbar() {

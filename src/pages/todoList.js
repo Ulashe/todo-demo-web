@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAuth } from "../redux/reducers/authentication";
 import {
   addTodo,
   getAllLocalTodoLists,
@@ -11,10 +10,11 @@ import {
 } from "../redux/reducers/localTodoLists";
 import axios from "axios";
 import { TodoList } from "../components";
+import { useIsAuthenticated } from "../utils/hooks/useIsAuthenticated";
 
 export default function TodoListPage() {
-  const auth = useSelector(getAuth);
-  if (auth.accessToken) {
+  const isAuthenticated = useIsAuthenticated();
+  if (isAuthenticated) {
     return <RemoteTodoList />;
   } else {
     return <LocalTodoList />;
@@ -24,15 +24,39 @@ export default function TodoListPage() {
 function RemoteTodoList() {
   const location = useLocation();
   const [todoList, setTodoList] = useState();
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (location.state && location.state.todoList) {
       setTodoList(location.state.todoList);
+      setLoading(false);
     } else {
-      axios.get("/api/todolists" + location.pathname).then((res) => setTodoList(res.data));
+      axios
+        .get("/todolists" + location.pathname)
+        .then((res) => {
+          setTodoList(res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          if (err.response.status == 403) {
+            // error message Not allowed
+          } else if (err.response.status == 404) {
+            // error message Not found
+          } else if (err.response.status == 400) {
+            // error message - invalid object id
+          }
+          setLoading(false);
+        });
     }
   }, []);
 
-  return <TodoList todoList={todoList} />;
+  return todoList ? (
+    <TodoList todoList={todoList} />
+  ) : loading ? (
+    <div>placeholder</div>
+  ) : (
+    <div>Böyle bir kayıt bulunamadı</div>
+  );
 }
 
 function LocalTodoList() {
@@ -57,7 +81,7 @@ function LocalTodoList() {
     dispatch(updateTodoList(todoList));
   };
 
-  return (
+  return todoList ? (
     <TodoList
       todoList={todoList}
       addTodoHandler={addTodoHandler}
@@ -65,5 +89,7 @@ function LocalTodoList() {
       updateTodoHandler={updateTodoHandler}
       updateTodoListHandler={updateTodoListHandler}
     />
+  ) : (
+    <div>Böyle bir kayıt bulunamadı</div>
   );
 }

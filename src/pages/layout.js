@@ -5,25 +5,33 @@ import { getAuth, refresh, signOutThunk } from "../redux/reducers/authentication
 import axios from "axios";
 import styled from "styled-components";
 
-const Container = styled("div")({
-  maxWidth: (props) => props.theme.maxWidth,
-  margin: "auto",
-  padding: 20,
-});
-
 export default function Layout({ children }) {
   const auth = useSelector(getAuth);
   const dispatch = useDispatch();
+  const [loading, setLoading] = React.useState(!!auth.refreshToken);
 
   React.useEffect(() => {
     let intervalID = null;
-    if (auth && auth.refreshToken) {
+    if (!!auth.refreshToken) {
       intervalID = setInterval(() => {
         axios
           .get(`/auth/accessToken/${auth.refreshToken}`)
-          .then((res) => dispatch(refresh(res.data)))
+          .then((res) => {
+            dispatch(refresh(res.data));
+          })
           .catch(() => dispatch(signOutThunk));
       }, 1000 * auth.expiresInSeconds - 10000);
+      if (new Date() > new Date(auth.expireDate)) {
+        axios
+          .get(`/auth/accessToken/${auth.refreshToken}`)
+          .then((res) => {
+            dispatch(refresh(res.data));
+            setLoading(false);
+          })
+          .catch(() => dispatch(signOutThunk));
+      } else {
+        setLoading(false);
+      }
     } else {
       if (intervalID) {
         clearInterval(intervalID);
@@ -32,11 +40,20 @@ export default function Layout({ children }) {
     return () => {
       clearInterval(intervalID);
     };
-  }, [auth]);
-  return (
+  }, [auth.refreshToken]);
+
+  return loading ? (
+    <div>placeholder</div>
+  ) : (
     <div>
       <Navbar />
       <Container>{children}</Container>
     </div>
   );
 }
+
+const Container = styled("div")({
+  maxWidth: (props) => props.theme.maxWidth,
+  margin: "auto",
+  padding: 20,
+});

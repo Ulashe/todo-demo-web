@@ -6,13 +6,13 @@ import {
   getAllLocalTodoLists,
   removeTodoList,
 } from "../redux/reducers/localTodoLists";
-import { getAuth } from "../redux/reducers/authentication";
 import axios from "axios";
 import { TodoLists } from "../components";
+import { useIsAuthenticated } from "../utils/hooks/useIsAuthenticated";
 
 export default function TodoListsPage() {
-  const auth = useSelector(getAuth);
-  if (auth.accessToken) {
+  const isAuthenticated = useIsAuthenticated();
+  if (isAuthenticated) {
     return <RemoteTodoLists />;
   } else {
     return <LocalTodoLists />;

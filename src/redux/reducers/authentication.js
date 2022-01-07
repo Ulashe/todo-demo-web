@@ -13,6 +13,7 @@ const initialState = {
   accessToken: "",
   refreshToken: "",
   expiresInSeconds: "",
+  expireDate: "",
   _id: "",
   name: "",
   email: "",
@@ -23,19 +24,29 @@ const authentication = createSlice({
   initialState: initialState,
   reducers: {
     signIn: (state, action) => {
-      return action.payload;
+      const expireDate = new Date();
+      expireDate.setSeconds(expireDate.getSeconds() + action.payload.expiresInSeconds);
+      return { ...action.payload, expireDate: expireDate.toJSON() };
     },
     signOut: (state) => {
       return initialState;
     },
     refresh: (state, action) => {
+      const expireDate = new Date();
+      expireDate.setSeconds(expireDate.getSeconds() + state.expiresInSeconds);
       state.accessToken = action.payload;
+      state.expireDate = expireDate.toJSON();
     },
   },
 });
 
 export const getAuth = createSelector(
   (state) => state.authentication,
+  (state) => state
+);
+
+export const getRefreshToken = createSelector(
+  (state) => state.authentication.refreshToken,
   (state) => state
 );
 
