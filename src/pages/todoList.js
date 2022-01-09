@@ -50,8 +50,66 @@ function RemoteTodoList() {
     }
   }, []);
 
+  const addTodoHandler = ({ _id, text }) => {
+    axios
+      .post(`/todolists/${_id}/todo`, { text })
+      .then((res) => setTodoList(res.data))
+      .catch((err) => {
+        if (err.response.status == 403) {
+          // error message Not allowed
+        } else if (err.response.status == 404) {
+          // error message Not found
+        }
+      });
+  };
+
+  const updateTodoListHandler = ({ _id, update }) => {
+    axios
+      .patch(`/todolists/${todoList._id}`, update)
+      .then((res) => setTodoList(res.data))
+      .catch((err) => {
+        if (err.response.status == 403) {
+          // error message Not allowed
+        } else if (err.response.status == 404) {
+          // error message Not found
+        }
+      });
+  };
+
+  const updateTodoHandler = ({ _id, todo }) => {
+    axios
+      .patch(`/todolists/${_id}/todo`, { todo })
+      .then((res) => setTodoList(res.data))
+      .catch((err) => {
+        if (err.response.status == 403) {
+          // error message Not allowed
+        } else if (err.response.status == 404) {
+          // error message Not found
+        }
+      });
+  };
+
+  const removeTodoHandler = ({ _id, todo }) => {
+    axios
+      .delete(`/todolists/${_id}/todo/${todo._id}`)
+      .then((res) => setTodoList(res.data))
+      .catch((err) => {
+        if (err.response.status == 403) {
+          // error message Not allowed
+        } else if (err.response.status == 404) {
+          // error message Not found
+        }
+      });
+  };
+
   return todoList ? (
-    <TodoList todoList={todoList} />
+    <TodoList
+      todoList={todoList}
+      addTodoHandler={addTodoHandler}
+      updateTodoListHandler={updateTodoListHandler}
+      updateTodoHandler={updateTodoHandler}
+      removeTodoHandler={removeTodoHandler}
+    />
   ) : loading ? (
     <div>placeholder</div>
   ) : (
@@ -77,8 +135,8 @@ function LocalTodoList() {
     dispatch(updateTodo({ _id, todo }));
   };
 
-  const updateTodoListHandler = (todoList) => {
-    dispatch(updateTodoList(todoList));
+  const updateTodoListHandler = ({ _id, update }) => {
+    dispatch(updateTodoList({ _id, update }));
   };
 
   return todoList ? (

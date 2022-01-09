@@ -8,7 +8,7 @@ export function EditTodoListTitle({ openModal, closeModal, todoList, updateTodoL
   const [title, setTitle] = useState(todoList.title);
   const editTodoList = (e) => {
     e.preventDefault();
-    updateTodoListHandler({ ...todoList, title });
+    updateTodoListHandler({ _id: todoList._id, update: { title } });
     closeModal();
   };
   return (

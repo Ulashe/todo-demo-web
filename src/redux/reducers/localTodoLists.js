@@ -31,12 +31,14 @@ const slice = createSlice({
           text: action.payload.text,
           isCompleted: false,
         });
+        state[index].updatedAt = new Date().toISOString();
       }
     },
     updateTodoList: (state, action) => {
       const index = state.findIndex((i) => i._id == action.payload._id);
       if (index + 1) {
-        state[index] = action.payload;
+        state[index] = { ...state[index], ...action.payload.update };
+        state[index].updatedAt = new Date().toISOString();
       }
     },
     updateTodo: (state, action) => {
@@ -45,6 +47,7 @@ const slice = createSlice({
         const todoIndex = state[index].todos.findIndex((i) => i._id == action.payload.todo._id);
         if (todoIndex + 1) {
           state[index].todos[todoIndex] = action.payload.todo;
+          state[index].updatedAt = new Date().toISOString();
         }
       }
     },
@@ -52,6 +55,7 @@ const slice = createSlice({
       const index = state.findIndex((i) => i._id == action.payload._id);
       if (index + 1) {
         state[index].todos = state[index].todos.filter((i) => i._id != action.payload.todo._id);
+        state[index].updatedAt = new Date().toISOString();
       }
     },
     removeTodoList: (state, action) => {
