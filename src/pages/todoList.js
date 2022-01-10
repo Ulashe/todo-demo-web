@@ -91,7 +91,7 @@ function RemoteTodoList() {
 
   const removeTodoHandler = ({ _id, todo }) => {
     axios
-      .delete(`/todolists/${_id}/todo/${todo._id}`)
+      .delete(`/todolists/${_id}/todo`, { todo })
       .then((res) => setTodoList(res.data))
       .catch((err) => {
         if (err.response.status == 403) {
