@@ -46,8 +46,8 @@ export function NavbarDropdown({ containerRef, auth, closeDropdown }) {
           <ModalButton
             modalContent={
               <Confirm
-                confirmContentText="Çıkış yapmak istediğinizden emin misiniz ?"
-                confirmButtonText="Çıkış yap"
+                contentText="Çıkış yapmak istediğinizden emin misiniz ?"
+                buttonText="Çıkış yap"
                 onConfirm={signOut}
               />
             }
