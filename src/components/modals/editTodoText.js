@@ -6,19 +6,27 @@ import { TextInput } from "../textInput";
 
 export function EditTodoText({ openModal, closeModal, todoListID, todo, updateTodoHandler }) {
   const [text, setText] = useState(todo.text);
+  const [loading, setLoading] = useState(false);
   const editTodo = (e) => {
     e.preventDefault();
-    updateTodoHandler({ _id: todoListID, todo: { ...todo, text } });
-    closeModal();
+    setLoading(true);
+    updateTodoHandler({ _id: todoListID, todo: { ...todo, text } }, (err) => {
+      setLoading(false);
+      if (err) {
+        console.log(err);
+      } else {
+        closeModal();
+      }
+    });
   };
   return (
     <ModalFormLayout
       heading="Todo text düzenle"
       footer={[
-        <TextButton key={1} variant="text" py={10} onClick={editTodo}>
+        <TextButton key={1} variant="text" onClick={editTodo} loading={loading}>
           Kaydet
         </TextButton>,
-        <TextButton key={2} variant="text" py={10} onClick={closeModal}>
+        <TextButton key={2} variant="text" onClick={closeModal}>
           İptal
         </TextButton>,
       ]}

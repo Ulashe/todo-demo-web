@@ -11,21 +11,30 @@ export function SignIn({ openModal, closeModal }) {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     if (email.length > 0 && password.length > 0) {
-      axios.post("/auth/signin", { email, password }).then((res) => {
-        closeModal();
-        dispatch(signIn(res.data));
-      });
+      axios
+        .post("/auth/signin", { email, password })
+        .then((res) => {
+          setLoading(false);
+          dispatch(signIn(res.data));
+          closeModal();
+        })
+        .catch((err) => {
+          setLoading(false);
+          console.log(err.response);
+        });
     }
   };
   return (
     <ModalFormLayout
       heading="Giriş yapın"
       footer={[
-        <TextButton key={1} variant="text" onClick={onSubmit}>
+        <TextButton key={1} variant="text" onClick={onSubmit} loading={loading}>
           Giriş yap
         </TextButton>,
         <TextButton key={2} variant="text" onClick={closeModal}>

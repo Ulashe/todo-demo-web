@@ -6,19 +6,27 @@ import { TextInput } from "../textInput";
 
 export function EditTodoListTitle({ openModal, closeModal, todoList, updateTodoListHandler }) {
   const [title, setTitle] = useState(todoList.title);
+  const [loading, setLoading] = useState(false);
   const editTodoList = (e) => {
     e.preventDefault();
-    updateTodoListHandler({ _id: todoList._id, update: { title } });
-    closeModal();
+    setLoading(true);
+    updateTodoListHandler({ _id: todoList._id, update: { title } }, (err) => {
+      setLoading(false);
+      if (err) {
+        console.log(err);
+      } else {
+        closeModal();
+      }
+    });
   };
   return (
     <ModalFormLayout
       heading="TodoList başlığını düzenle"
       footer={[
-        <TextButton key={1} variant="text" py={10} onClick={editTodoList}>
+        <TextButton key={1} variant="text" onClick={editTodoList} loading={loading}>
           Kaydet
         </TextButton>,
-        <TextButton key={2} variant="text" py={10} onClick={closeModal}>
+        <TextButton key={2} variant="text" onClick={closeModal}>
           İptal
         </TextButton>,
       ]}

@@ -3,19 +3,25 @@ import { ModalFormLayout } from "./modalFormLayout";
 import { TextButton } from "../textButton";
 import { Box, Text } from "../styled-components";
 
-export function Confirm({
-  openModal,
-  closeModal,
-  onConfirm,
-  confirmContentText,
-  confirmButtonText,
-}) {
+export function Confirm({ openModal, closeModal, onConfirm, contentText, buttonText }) {
+  const [loading, setLoading] = React.useState(false);
+  const onClick = () => {
+    setLoading(true);
+    onConfirm((err) => {
+      setLoading(false);
+      if (err) {
+        console.log(err);
+      } else {
+        closeModal();
+      }
+    });
+  };
   return (
     <ModalFormLayout
       heading="Dikkat!"
       footer={[
-        <TextButton key={1} variant="text" onClick={onConfirm}>
-          {confirmButtonText ? confirmButtonText : "Tamam"}
+        <TextButton key={1} variant="text" onClick={onClick} loading={loading}>
+          {buttonText ? buttonText : "Tamam"}
         </TextButton>,
         <TextButton key={2} variant="text" onClick={closeModal}>
           İptal
@@ -23,7 +29,7 @@ export function Confirm({
       ]}
     >
       <Box p={20}>
-        <Text fontSize={20}>{confirmContentText}</Text>
+        <Text fontSize={20}>{contentText}</Text>
       </Box>
     </ModalFormLayout>
   );

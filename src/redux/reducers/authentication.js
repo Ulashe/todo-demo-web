@@ -1,12 +1,18 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const signOutThunk = () => (dispatch, getState) => {
+export const signOutThunk = (callback) => (dispatch, getState) => {
   const { refreshToken } = getState().authentication;
   axios
     .delete(`/auth/refreshtokens/${refreshToken}`)
-    .then((res) => dispatch(signOut()))
-    .catch(() => dispatch(signOut()));
+    .then((res) => {
+      dispatch(signOut());
+      if (typeof callback == "function") callback();
+    })
+    .catch(() => {
+      dispatch(signOut());
+      if (typeof callback == "function") callback();
+    });
 };
 
 const initialState = {

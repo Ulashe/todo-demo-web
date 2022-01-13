@@ -50,55 +50,51 @@ function RemoteTodoList() {
     }
   }, []);
 
-  const addTodoHandler = ({ _id, text }) => {
+  const addTodoHandler = ({ _id, text }, callback) => {
     axios
       .post(`/todolists/${_id}/todo`, { text })
-      .then((res) => setTodoList(res.data))
+      .then((res) => {
+        setTodoList(res.data);
+        if (typeof callback == "function") callback();
+      })
       .catch((err) => {
-        if (err.response.status == 403) {
-          // error message Not allowed
-        } else if (err.response.status == 404) {
-          // error message Not found
-        }
+        if (typeof callback == "function") callback(err.response);
       });
   };
 
-  const updateTodoListHandler = ({ _id, update }) => {
+  const updateTodoListHandler = ({ _id, update }, callback) => {
     axios
-      .patch(`/todolists/${todoList._id}`, update)
-      .then((res) => setTodoList(res.data))
+      .patch(`/todolists/${_id}`, update)
+      .then((res) => {
+        setTodoList(res.data);
+        if (typeof callback == "function") callback();
+      })
       .catch((err) => {
-        if (err.response.status == 403) {
-          // error message Not allowed
-        } else if (err.response.status == 404) {
-          // error message Not found
-        }
+        if (typeof callback == "function") callback(err.response);
       });
   };
 
-  const updateTodoHandler = ({ _id, todo }) => {
+  const updateTodoHandler = ({ _id, todo }, callback) => {
     axios
       .patch(`/todolists/${_id}/todo`, { todo })
-      .then((res) => setTodoList(res.data))
+      .then((res) => {
+        setTodoList(res.data);
+        if (typeof callback == "function") callback();
+      })
       .catch((err) => {
-        if (err.response.status == 403) {
-          // error message Not allowed
-        } else if (err.response.status == 404) {
-          // error message Not found
-        }
+        if (typeof callback == "function") callback(err.response);
       });
   };
 
-  const removeTodoHandler = ({ _id, todo }) => {
+  const removeTodoHandler = ({ _id, todo }, callback) => {
     axios
-      .delete(`/todolists/${_id}/todo`, { todo })
-      .then((res) => setTodoList(res.data))
+      .delete(`/todolists/${_id}/todo`, { data: { todo } })
+      .then((res) => {
+        setTodoList(res.data);
+        if (typeof callback == "function") callback();
+      })
       .catch((err) => {
-        if (err.response.status == 403) {
-          // error message Not allowed
-        } else if (err.response.status == 404) {
-          // error message Not found
-        }
+        if (typeof callback == "function") callback(err.response);
       });
   };
 
@@ -123,20 +119,24 @@ function LocalTodoList() {
   const localTodoLists = useSelector(getAllLocalTodoLists);
   const todoList = localTodoLists.find((i) => i._id == location.pathname.substring(1));
 
-  const addTodoHandler = ({ _id, text }) => {
+  const addTodoHandler = ({ _id, text }, callback) => {
     dispatch(addTodo({ _id, text }));
+    if (typeof callback == "function") callback();
   };
 
-  const removeTodoHandler = ({ _id, todo }) => {
+  const removeTodoHandler = ({ _id, todo }, callback) => {
     dispatch(removeTodo({ _id, todo }));
+    if (typeof callback == "function") callback();
   };
 
-  const updateTodoHandler = ({ _id, todo }) => {
+  const updateTodoHandler = ({ _id, todo }, callback) => {
     dispatch(updateTodo({ _id, todo }));
+    if (typeof callback == "function") callback();
   };
 
-  const updateTodoListHandler = ({ _id, update }) => {
+  const updateTodoListHandler = ({ _id, update }, callback) => {
     dispatch(updateTodoList({ _id, update }));
+    if (typeof callback == "function") callback();
   };
 
   return todoList ? (

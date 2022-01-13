@@ -26,15 +26,29 @@ function RemoteTodoLists() {
     axios.get("/todolists").then((res) => setTodoLists(res.data));
   }, []);
 
-  const addTodoListHandler = ({ title }) => {
-    axios.post("/todolists", { title }).then((res) => {
-      setTodoLists((todoLists) => [...todoLists, res.data]);
-    });
+  const addTodoListHandler = ({ title }, callback) => {
+    axios
+      .post("/todolists", { title })
+      .then((res) => {
+        setTodoLists((todoLists) => [...todoLists, res.data]);
+
+        if (typeof callback == "function") callback();
+      })
+      .catch((err) => {
+        if (typeof callback == "function") callback(err.response);
+      });
   };
-  const removeTodoListHandler = ({ _id }) => {
+
+  const removeTodoListHandler = ({ _id }, callback) => {
     axios
       .delete(`/todolists/${_id}`)
-      .then(() => setTodoLists((todoLists) => todoLists.filter((i) => i._id != _id)));
+      .then(() => {
+        setTodoLists((todoLists) => todoLists.filter((i) => i._id != _id));
+        if (typeof callback == "function") callback();
+      })
+      .catch((err) => {
+        if (typeof callback == "function") callback(err.response);
+      });
   };
 
   return (
@@ -50,13 +64,15 @@ function LocalTodoLists() {
   const dispatch = useDispatch();
   const todoLists = useSelector(getAllLocalTodoLists);
 
-  const addTodoListHandler = ({ title }) => {
+  const addTodoListHandler = ({ title }, callback) => {
     const _id = generateID();
     dispatch(addTodoList({ title, _id }));
+    if (typeof callback == "function") callback();
   };
 
-  const removeTodoListHandler = ({ _id }) => {
+  const removeTodoListHandler = ({ _id }, callback) => {
     dispatch(removeTodoList({ _id }));
+    if (typeof callback == "function") callback();
   };
 
   return (

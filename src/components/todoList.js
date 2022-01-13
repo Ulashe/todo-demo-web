@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Heading, IconWrapper, ProgressCircle, TextButton, TextInput } from "./";
-import { Box, FlexBox, Text } from "./styled-components";
+import { FlexBox, Text } from "./styled-components";
 import { hslaAdjust } from "../utils/hslaAdjust";
 import { DeleteIcon, DoneIcon, EditIcon, MoreIcon } from "../assets/icons";
-import { EditTodoText, EditTodoListTitle, ModalButton } from "./modals";
+import { EditTodoText, EditTodoListTitle, ModalButton, Confirm } from "./modals";
 
 export function TodoList({
   todoList,
@@ -13,6 +13,7 @@ export function TodoList({
   updateTodoListHandler,
 }) {
   const [text, setText] = useState("");
+  const [loading, setLoading] = useState(false);
   const counts = todoList.todos.reduce(
     (acc, item) => {
       item.isCompleted ? acc.completed++ : acc.unCompleted++;
@@ -20,14 +21,24 @@ export function TodoList({
     },
     { completed: 0, unCompleted: 0 }
   );
+
   const addTodo = (e) => {
     e.preventDefault();
+    setLoading(true);
     if (text.length > 0) {
-      addTodoHandler({ _id: todoList._id, text });
-      setText("");
+      addTodoHandler({ _id: todoList._id, text }, (err) => {
+        if (err) {
+          console.log(err);
+          setLoading(false);
+        } else {
+          setText("");
+          setLoading(false);
+        }
+      });
     }
   };
-  const removeTodo = (todo) => () => removeTodoHandler({ _id: todoList._id, todo });
+
+  const removeTodo = (todo) => (cb) => removeTodoHandler({ _id: todoList._id, todo }, cb);
 
   return (
     <div>
@@ -102,7 +113,13 @@ export function TodoList({
             <form onSubmit={addTodo}>
               <TextInput value={text} onChange={setText} />
             </form>
-            <TextButton fontWeight={500} variant="contained" borderRadius={10} onClick={addTodo}>
+            <TextButton
+              fontWeight={500}
+              variant="contained"
+              borderRadius={10}
+              onClick={addTodo}
+              loading={loading}
+            >
               Ekle
             </TextButton>
           </FlexBox>
@@ -149,17 +166,26 @@ export function TodoList({
                     <EditIcon />
                   </IconWrapper>
                 </ModalButton>
-                <IconWrapper
-                  onClick={removeTodo(todo)}
-                  cursor="pointer"
-                  display="flex"
-                  center
-                  iconSize="32px"
-                  borderRadius="10px"
-                  hoverBg={(theme) => hslaAdjust({ color: theme.colors.blue[1], lightness: 50 })}
+                <ModalButton
+                  modalContent={
+                    <Confirm
+                      buttonText="Sil"
+                      contentText="Todo'yu silmek istediğinizden emin misiniz ?"
+                      onConfirm={removeTodo(todo)}
+                    />
+                  }
                 >
-                  <DeleteIcon />
-                </IconWrapper>
+                  <IconWrapper
+                    cursor="pointer"
+                    display="flex"
+                    center
+                    iconSize="32px"
+                    borderRadius="10px"
+                    hoverBg={(theme) => hslaAdjust({ color: theme.colors.blue[1], lightness: 50 })}
+                  >
+                    <DeleteIcon />
+                  </IconWrapper>
+                </ModalButton>
               </FlexBox>
             ))
           ) : (
@@ -174,7 +200,13 @@ export function TodoList({
             <form onSubmit={addTodo}>
               <TextInput value={text} onChange={setText} />
             </form>
-            <TextButton fontWeight={500} variant="contained" borderRadius={10} onClick={addTodo}>
+            <TextButton
+              fontWeight={500}
+              variant="contained"
+              borderRadius={10}
+              onClick={addTodo}
+              loading={loading}
+            >
               Ekle
             </TextButton>
           </FlexBox>

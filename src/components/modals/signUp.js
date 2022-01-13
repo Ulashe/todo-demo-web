@@ -13,15 +13,24 @@ export function SignUp({ openModal, closeModal }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordAgain, setPasswordAgain] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     if (name.length > 0 && email.length > 0 && password.length > 0 && passwordAgain.length > 0) {
       if (password == passwordAgain) {
-        axios.post("/auth/signup", { name, email, password }).then((res) => {
-          closeModal();
-          dispatch(signIn(res.data));
-        });
+        axios
+          .post("/auth/signup", { name, email, password })
+          .then((res) => {
+            setLoading(false);
+            dispatch(signIn(res.data));
+            closeModal();
+          })
+          .catch((err) => {
+            setLoading(false);
+            console.log(err.response);
+          });
       }
     }
   };
@@ -29,7 +38,7 @@ export function SignUp({ openModal, closeModal }) {
     <ModalFormLayout
       heading="Üye olun"
       footer={[
-        <TextButton key={1} variant="text" onClick={onSubmit}>
+        <TextButton key={1} variant="text" onClick={onSubmit} loading={loading}>
           Üye ol
         </TextButton>,
         <TextButton key={2} variant="text" onClick={closeModal}>

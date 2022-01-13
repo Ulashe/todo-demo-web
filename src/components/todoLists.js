@@ -19,7 +19,7 @@ export function TodoLists({ todoLists, addTodoListHandler, removeTodoListHandler
               },
               { completed: 0, unCompleted: 0 }
             );
-            const removeTodoList = () => removeTodoListHandler({ _id: todoList._id });
+            const removeTodoList = (cb) => removeTodoListHandler({ _id: todoList._id }, cb);
             return (
               <FlexBox key={todoList._id} gridColumnGap="5px" alignItems="stretch">
                 <ProgressCircle
@@ -49,8 +49,8 @@ export function TodoLists({ todoLists, addTodoListHandler, removeTodoListHandler
                 <ModalButton
                   modalContent={
                     <Confirm
-                      confirmButtonText="Sil"
-                      confirmContentText="Todo list'i silmek istediğinizden emin misiniz ?"
+                      buttonText="Sil"
+                      contentText="Todo list'i silmek istediğinizden emin misiniz ?"
                       onConfirm={removeTodoList}
                     />
                   }

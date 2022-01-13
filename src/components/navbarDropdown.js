@@ -11,8 +11,8 @@ import { hslaAdjust } from "../utils/hslaAdjust";
 export function NavbarDropdown({ containerRef, auth, closeDropdown }) {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const signOut = () => {
-    dispatch(signOutThunk());
+  const signOut = (callback) => {
+    dispatch(signOutThunk(callback));
     closeDropdown();
   };
 

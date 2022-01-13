@@ -6,21 +6,29 @@ import { TextInput } from "../textInput";
 
 export function NewTodoList({ openModal, closeModal, addTodoListHandler }) {
   const [title, setTitle] = useState("");
+  const [loading, setLoading] = useState(false);
   const addTodoList = (e) => {
     e.preventDefault();
+    setLoading(true);
     if (title.length > 0) {
-      addTodoListHandler({ title });
-      closeModal();
+      addTodoListHandler({ title }, (err) => {
+        setLoading(false);
+        if (err) {
+          console.log(err);
+        } else {
+          closeModal();
+        }
+      });
     }
   };
   return (
     <ModalFormLayout
       heading="Yeni bir todo list oluşturun"
       footer={[
-        <TextButton key={1} variant="text" py={10} onClick={addTodoList}>
+        <TextButton key={1} variant="text" onClick={addTodoList} loading={loading}>
           Oluştur
         </TextButton>,
-        <TextButton key={2} variant="text" py={10} onClick={closeModal}>
+        <TextButton key={2} variant="text" onClick={closeModal}>
           İptal
         </TextButton>,
       ]}
