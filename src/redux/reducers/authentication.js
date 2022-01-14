@@ -39,9 +39,10 @@ const authentication = createSlice({
     },
     refresh: (state, action) => {
       const expireDate = new Date();
-      expireDate.setSeconds(expireDate.getSeconds() + state.expiresInSeconds);
-      state.accessToken = action.payload;
+      expireDate.setSeconds(expireDate.getSeconds() + action.payload.expiresInSeconds);
       state.expireDate = expireDate.toJSON();
+      state.expiresInSeconds = action.payload.expiresInSeconds;
+      state.accessToken = action.payload.accessToken;
     },
   },
 });

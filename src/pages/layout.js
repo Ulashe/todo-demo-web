@@ -11,15 +11,15 @@ export default function Layout({ children }) {
   const [loading, setLoading] = React.useState(!!auth.refreshToken);
 
   React.useEffect(() => {
-    let intervalID = null;
+    let timeoutID = null;
     if (!!auth.refreshToken) {
-      intervalID = setInterval(() => {
+      timeoutID = setTimeout(() => {
         axios
           .get(`/auth/accessToken/${auth.refreshToken}`)
           .then((res) => {
             dispatch(refresh(res.data));
           })
-          .catch(() => dispatch(signOutThunk));
+          .catch(() => dispatch(signOutThunk()));
       }, 1000 * auth.expiresInSeconds - 10000);
       if (new Date() > new Date(auth.expireDate)) {
         axios
@@ -28,19 +28,19 @@ export default function Layout({ children }) {
             dispatch(refresh(res.data));
             setLoading(false);
           })
-          .catch(() => dispatch(signOutThunk));
+          .catch(() => dispatch(signOutThunk()));
       } else {
         setLoading(false);
       }
     } else {
-      if (intervalID) {
-        clearInterval(intervalID);
+      if (timeoutID) {
+        clearInterval(timeoutID);
       }
     }
     return () => {
-      clearInterval(intervalID);
+      clearInterval(timeoutID);
     };
-  }, [auth.refreshToken]);
+  }, [auth.refreshToken, auth.expireDate]);
 
   return loading ? (
     <div>placeholder</div>
