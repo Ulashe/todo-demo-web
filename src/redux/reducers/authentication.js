@@ -21,7 +21,6 @@ const initialState = {
   expiresInSeconds: "",
   expireDate: "",
   _id: "",
-  name: "",
   email: "",
 };
 
