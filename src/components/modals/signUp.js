@@ -9,19 +9,20 @@ import { signIn } from "../../redux/reducers/authentication";
 
 export function SignUp({ openModal, closeModal }) {
   const dispatch = useDispatch();
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordAgain, setPasswordAgain] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({});
 
   const onSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-    if (name.length > 0 && email.length > 0 && password.length > 0 && passwordAgain.length > 0) {
+    if (email.length > 0 && password.length > 0 && passwordAgain.length > 0) {
       if (password == passwordAgain) {
+        setLoading(true);
+        setError({});
         axios
-          .post("/auth/signup", { name, email, password })
+          .post("/auth/signup", { email, password })
           .then((res) => {
             setLoading(false);
             dispatch(signIn(res.data));
@@ -29,8 +30,11 @@ export function SignUp({ openModal, closeModal }) {
           })
           .catch((err) => {
             setLoading(false);
-            console.log(err.response);
+            const { errors, code } = err.response.data;
+            setError(errors.find((i) => i.code == code));
           });
+      } else {
+        setError({ field: "passwordRepeat" });
       }
     }
   };
@@ -48,19 +52,58 @@ export function SignUp({ openModal, closeModal }) {
       width={["80%", "300px"]}
     >
       <FlexBox as="form" onSubmit={onSubmit} flexDirection="column" p={10} gridRowGap={10}>
-        <Text fontSize={16}>İsminizi giriniz:</Text>
-        <TextInput value={name} onChange={setName} color="black" />
-        <Text fontSize={16}>Email'inizi giriniz:</Text>
-        <TextInput type="email" value={email} onChange={setEmail} color="black" />
-        <Text fontSize={16}>Şifrenizi giriniz:</Text>
-        <TextInput type="password" value={password} onChange={setPassword} color="black" />
-        <Text fontSize={16}>Şifrenizi tekrar giriniz:</Text>
+        <Text fontSize={16} color={error.field == "email" ? "red" : undefined}>
+          Email'inizi giriniz:
+        </Text>
         <TextInput
+          required
+          type="email"
+          value={email}
+          onChange={setEmail}
+          color="black"
+          borderColor={error.field == "email" ? "red" : undefined}
+        />
+        {error.field == "email" ? (
+          <Text fontSize={12} color="red" mt={-5}>
+            {error.code == 1 ? "Email hatalı!" : error.code == 2 ? "Email zaten kullanımda!" : null}
+          </Text>
+        ) : null}
+        {/* Password */}
+        <Text fontSize={16} color={error.field == "password" ? "red" : undefined}>
+          Şifrenizi giriniz:
+        </Text>
+        <TextInput
+          required
+          type="password"
+          value={password}
+          onChange={setPassword}
+          color="black"
+          minLength="6"
+          borderColor={error.field == "password" ? "red" : undefined}
+        />
+        {error.field == "password" ? (
+          <Text fontSize={12} color="red" mt={-5}>
+            Şifre en az 6 haneli olmalıdır!
+          </Text>
+        ) : null}
+        {/* Password repeat */}
+        <Text fontSize={16} color={error.field == "passwordRepeat" ? "red" : undefined}>
+          Şifrenizi tekrar giriniz:
+        </Text>
+        <TextInput
+          required
           type="password"
           value={passwordAgain}
           onChange={setPasswordAgain}
           color="black"
+          minLength="6"
+          borderColor={error.field == "passwordRepeat" ? "red" : undefined}
         />
+        {error.field == "passwordRepeat" ? (
+          <Text fontSize={12} color="red" mt={-5}>
+            Şifre aynı değil
+          </Text>
+        ) : null}
         <TextInput type="submit" display="none" />
       </FlexBox>
     </ModalFormLayout>

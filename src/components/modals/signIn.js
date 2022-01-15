@@ -12,11 +12,13 @@ export function SignIn({ openModal, closeModal }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({});
 
   const onSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
     if (email.length > 0 && password.length > 0) {
+      setLoading(true);
+      setError({});
       axios
         .post("/auth/signin", { email, password })
         .then((res) => {
@@ -26,7 +28,8 @@ export function SignIn({ openModal, closeModal }) {
         })
         .catch((err) => {
           setLoading(false);
-          console.log(err.response);
+          const { errors, code } = err.response.data;
+          setError(errors.find((i) => i.code == code));
         });
     }
   };
@@ -44,10 +47,43 @@ export function SignIn({ openModal, closeModal }) {
       width={["80%", "300px"]}
     >
       <FlexBox as="form" onSubmit={onSubmit} flexDirection="column" p={10} gridRowGap={10}>
-        <Text fontSize={16}>Email'inizi giriniz:</Text>
-        <TextInput type="email" value={email} onChange={setEmail} color="black" />
-        <Text fontSize={16}>Şifrenizi giriniz:</Text>
-        <TextInput type="password" value={password} onChange={setPassword} color="black" />
+        <Text fontSize={16} color={error.field == "email" ? "red" : undefined}>
+          Email'inizi giriniz:
+        </Text>
+        <TextInput
+          required
+          type="email"
+          value={email}
+          onChange={setEmail}
+          color="black"
+          borderColor={error.field == "email" ? "red" : undefined}
+        />
+        {error.field == "email" ? (
+          <Text fontSize={12} color="red" mt={-5}>
+            {error.code == 1 ? "Email hatalı!" : error.code == 3 ? "Email bulunamadı!" : null}
+          </Text>
+        ) : null}
+        <Text fontSize={16} color={error.field == "password" ? "red" : undefined}>
+          Şifrenizi giriniz:
+        </Text>
+        <TextInput
+          required
+          type="password"
+          value={password}
+          onChange={setPassword}
+          color="black"
+          minLength="6"
+          borderColor={error.field == "password" ? "red" : undefined}
+        />
+        {error.field == "password" ? (
+          <Text fontSize={12} color="red" mt={-5}>
+            {error.code == 4
+              ? "Şifre en az 6 haneli olmalıdır!"
+              : error.code == 5
+              ? "Şifre yanlış!"
+              : null}
+          </Text>
+        ) : null}
         <TextInput type="submit" display="none" />
       </FlexBox>
     </ModalFormLayout>
