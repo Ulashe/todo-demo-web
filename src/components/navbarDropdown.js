@@ -1,11 +1,10 @@
 import React from "react";
 import { Box, FlexBox, Text } from "./styled-components";
 import { useTheme } from "styled-components";
-import { Confirm, ModalButton, SignUp } from "./modals";
+import { ChangePassword, Confirm, ModalButton, SignIn, SignUp } from "./modals";
 import { TextButton } from "./";
 import { useDispatch } from "react-redux";
 import { signOutThunk } from "../redux/reducers/authentication";
-import { SignIn } from "./modals/signIn";
 import { hslaAdjust } from "../utils/hslaAdjust";
 
 export function NavbarDropdown({ containerRef, auth, closeDropdown }) {
@@ -43,6 +42,12 @@ export function NavbarDropdown({ containerRef, auth, closeDropdown }) {
             {auth.email}
           </Text>
           <Box height="1px" width="100%" bg="blue.1" />
+          <ModalButton modalContent={<ChangePassword closeDropdown={closeDropdown} />}>
+            <TextButton variant="text" fontSize={16} borderRadius={10}>
+              Şifrenizi değiştirin
+            </TextButton>
+          </ModalButton>
+          <Box height="1px" width="100%" bg="blue.1" />
           <ModalButton
             modalContent={
               <Confirm
@@ -59,13 +64,13 @@ export function NavbarDropdown({ containerRef, auth, closeDropdown }) {
         </>
       ) : (
         <>
-          <ModalButton modalContent={<SignIn />}>
+          <ModalButton modalContent={<SignIn closeDropdown={closeDropdown} />}>
             <TextButton variant="text" fontSize={16} borderRadius={10}>
               Giriş yapın
             </TextButton>
           </ModalButton>
           <Box height="1px" width="100%" bg="blue.1" />
-          <ModalButton modalContent={<SignUp />}>
+          <ModalButton modalContent={<SignUp closeDropdown={closeDropdown} />}>
             <TextButton variant="text" fontSize={16} borderRadius={10}>
               Üye olun
             </TextButton>

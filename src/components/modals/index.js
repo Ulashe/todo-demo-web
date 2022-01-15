@@ -6,3 +6,5 @@ export { Confirm } from "./confirm";
 export { EditTodoListTitle } from "./editTodoListTitle";
 export { EditTodoText } from "./editTodoText";
 export { SignUp } from "./signUp";
+export { SignIn } from "./signIn";
+export { ChangePassword } from "./changePassword";

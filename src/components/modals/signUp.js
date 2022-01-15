@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { ModalFormLayout } from "./modalFormLayout";
 import { TextButton } from "../textButton";
-import { Box, FlexBox, Text } from "../styled-components";
+import { FlexBox, Text } from "../styled-components";
 import { TextInput } from "../textInput";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { signIn } from "../../redux/reducers/authentication";
 
-export function SignUp({ openModal, closeModal }) {
+export function SignUp({ openModal, closeModal, closeDropdown }) {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,6 +27,7 @@ export function SignUp({ openModal, closeModal }) {
             setLoading(false);
             dispatch(signIn(res.data));
             closeModal();
+            closeDropdown();
           })
           .catch((err) => {
             setLoading(false);
@@ -38,6 +39,7 @@ export function SignUp({ openModal, closeModal }) {
       }
     }
   };
+
   return (
     <ModalFormLayout
       heading="Üye olun"
