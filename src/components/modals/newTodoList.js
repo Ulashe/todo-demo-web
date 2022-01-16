@@ -1,24 +1,25 @@
 import React, { useState } from "react";
 import { ModalFormLayout } from "./modalFormLayout";
 import { TextButton } from "../textButton";
-import { Box, Text } from "../styled-components";
+import { FlexBox, Text } from "../styled-components";
 import { TextInput } from "../textInput";
 
 export function NewTodoList({ openModal, closeModal, addTodoListHandler }) {
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const addTodoList = (e) => {
     e.preventDefault();
+    setErrorMessage("");
     if (title.length > 0) {
       setLoading(true);
-      addTodoListHandler({ title }, (err) => {
+      addTodoListHandler({ title }, () => {
         setLoading(false);
-        if (err) {
-          console.log(err);
-        } else {
-          closeModal();
-        }
+        closeModal();
       });
+    } else {
+      setErrorMessage("Title boş olamaz!");
     }
   };
   return (
@@ -34,12 +35,24 @@ export function NewTodoList({ openModal, closeModal, addTodoListHandler }) {
       ]}
       width={["80%", "400px"]}
     >
-      <Box as="form" onSubmit={addTodoList} p={10}>
-        <Text mb={10} mt={5} fontSize={20}>
+      <FlexBox as="form" onSubmit={addTodoList} flexDirection="column" p={10} gridRowGap={10}>
+        <Text fontSize={16} color={errorMessage ? "red" : undefined}>
           Todo List için başlık girin:
         </Text>
-        <TextInput autoFocus color="black" fontSize={16} value={title} onChange={setTitle} />
-      </Box>
+        <TextInput
+          autoFocus
+          color="black"
+          fontSize={16}
+          value={title}
+          onChange={setTitle}
+          borderColor={errorMessage ? "red" : undefined}
+        />
+        {errorMessage ? (
+          <Text fontSize={12} color="red" mt={-5}>
+            {errorMessage}
+          </Text>
+        ) : null}
+      </FlexBox>
     </ModalFormLayout>
   );
 }

@@ -14,6 +14,7 @@ export function TodoList({
 }) {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const counts = todoList.todos.reduce(
     (acc, item) => {
       item.isCompleted ? acc.completed++ : acc.unCompleted++;
@@ -24,12 +25,15 @@ export function TodoList({
 
   const addTodo = (e) => {
     e.preventDefault();
+    setErrorMessage("");
     if (text.length > 0) {
       setLoading(true);
       addTodoHandler({ _id: todoList._id, text }, () => {
         setText("");
         setLoading(false);
       });
+    } else {
+      setErrorMessage("Text boş olamaz");
     }
   };
 
@@ -106,7 +110,12 @@ export function TodoList({
               Yeni todo:
             </Text>
             <form onSubmit={addTodo}>
-              <TextInput value={text} onChange={setText} />
+              <TextInput
+                value={text}
+                onChange={setText}
+                borderColor={errorMessage && text.length == 0 ? "red" : undefined}
+                placeholder={errorMessage && text.length == 0 ? errorMessage : undefined}
+              />
             </form>
             <TextButton
               fontWeight={500}
@@ -195,7 +204,12 @@ export function TodoList({
               Yeni todo:
             </Text>
             <form onSubmit={addTodo}>
-              <TextInput value={text} onChange={setText} />
+              <TextInput
+                value={text}
+                onChange={setText}
+                borderColor={errorMessage && text.length == 0 ? "red" : undefined}
+                placeholder={errorMessage && text.length == 0 ? errorMessage : undefined}
+              />
             </form>
             <TextButton
               fontWeight={500}

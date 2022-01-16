@@ -1,23 +1,26 @@
 import React, { useState } from "react";
 import { ModalFormLayout } from "./modalFormLayout";
 import { TextButton } from "../textButton";
-import { Box, Text } from "../styled-components";
+import { FlexBox, Text } from "../styled-components";
 import { TextInput } from "../textInput";
 
 export function EditTodoListTitle({ openModal, closeModal, todoList, updateTodoListHandler }) {
   const [title, setTitle] = useState(todoList.title);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const editTodoList = (e) => {
     e.preventDefault();
-    setLoading(true);
-    updateTodoListHandler({ _id: todoList._id, update: { title } }, (err) => {
-      setLoading(false);
-      if (err) {
-        console.log(err);
-      } else {
+    setErrorMessage("");
+    if (title.length > 0) {
+      setLoading(true);
+      updateTodoListHandler({ _id: todoList._id, update: { title } }, () => {
+        setLoading(false);
         closeModal();
-      }
-    });
+      });
+    } else {
+      setErrorMessage("Title boş olamaz!");
+    }
   };
   return (
     <ModalFormLayout
@@ -32,12 +35,24 @@ export function EditTodoListTitle({ openModal, closeModal, todoList, updateTodoL
       ]}
       width={["80%", "400px"]}
     >
-      <Box as="form" onSubmit={editTodoList} p={10}>
-        <Text mb={10} mt={5} fontSize={20}>
+      <FlexBox as="form" onSubmit={editTodoList} flexDirection="column" p={10} gridRowGap={10}>
+        <Text fontSize={16} color={errorMessage ? "red" : undefined}>
           TodoList başlığını düzenleyin:
         </Text>
-        <TextInput autoFocus color="black" fontSize={16} value={title} onChange={setTitle} />
-      </Box>
+        <TextInput
+          autoFocus
+          color="black"
+          fontSize={16}
+          value={title}
+          onChange={setTitle}
+          borderColor={errorMessage ? "red" : undefined}
+        />
+        {errorMessage ? (
+          <Text fontSize={12} color="red" mt={-5}>
+            {errorMessage}
+          </Text>
+        ) : null}
+      </FlexBox>
     </ModalFormLayout>
   );
 }
