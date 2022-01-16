@@ -44,7 +44,7 @@ export function TodoLists({ todoLists, addTodoListHandler, removeTodoListHandler
                   )}
                 </ProgressCircle>
                 <Link to={todoList._id} flex={1} overflow="hidden">
-                  <TodoListItem title={todoList.title} counts={counts} />
+                  <TodoListItem title={todoList.title} />
                 </Link>
                 <ModalButton
                   modalContent={
