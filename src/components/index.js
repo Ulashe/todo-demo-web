@@ -4,7 +4,7 @@ export { Navbar } from "./navbar";
 export { ProgressCircle } from "./progressCircle";
 export { TextButton } from "./textButton";
 export { TextInput } from "./textInput";
-export { TodoList } from "./todoList";
+export { TodoList, TodoListPlaceholder } from "./todoList";
 export { TodoLists } from "./todoLists";
 export { TodoListItem } from "./todoListItem";
 export { NavbarDropdown } from "./navbarDropdown";

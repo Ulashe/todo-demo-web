@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Heading, IconWrapper, ProgressCircle, TextButton, TextInput } from "./";
-import { FlexBox, Text } from "./styled-components";
+import { Box, FlexBox, Text } from "./styled-components";
 import { hslaAdjust } from "../utils/hslaAdjust";
 import { DeleteIcon, DoneIcon, EditIcon, MoreIcon } from "../assets/icons";
 import { EditTodoText, EditTodoListTitle, ModalButton, Confirm } from "./modals";
@@ -41,7 +41,7 @@ export function TodoList({
   const removeTodo = (todo) => (cb) => removeTodoHandler({ _id: todoList._id, todo }, cb);
 
   return (
-    <div>
+    <FlexBox flexDirection="column">
       <FlexBox gridColumnGap={20}>
         <Heading>{todoList.title}</Heading>
         <ModalButton
@@ -107,7 +107,7 @@ export function TodoList({
             </ProgressCircle>
           </FlexBox>
           <FlexBox gridColumnGap={10} alignItems="center">
-            <Text color="blue.3" fontSize={[18]} fontWeight={500}>
+            <Text color="blue.3" fontSize={18} fontWeight={500}>
               Yeni todo:
             </Text>
             <form onSubmit={addTodo}>
@@ -189,7 +189,9 @@ export function TodoList({
               </FlexBox>
             ))
           ) : (
-            <div>Hiç todo yok</div>
+            <Text color="primary" fontSize={32} textAlign="center" p={20}>
+              Hiç bir todo bulunmamakta!
+            </Text>
           )}
         </FlexBox>
         {todoList.todos.length > 5 ? (
@@ -212,6 +214,52 @@ export function TodoList({
           </FlexBox>
         ) : null}
       </FlexBox>
-    </div>
+    </FlexBox>
+  );
+}
+
+export function TodoListPlaceholder() {
+  return (
+    <FlexBox flexDirection="column">
+      <FlexBox gridColumnGap={20}>
+        <Box width={400} height={30} bg="#ccc" />
+        <Box width={32} height={32} bg="#ccc" borderRadius={10} />
+      </FlexBox>
+      <FlexBox mt={20} vertical gridRowGap={20}>
+        <Box width={300} height={18} bg="#ccc" />
+        <Box width={300} height={18} bg="#ccc" />
+        <FlexBox
+          alignItems="baseline"
+          justifyContent="space-between"
+          flexWrap="wrap"
+          gridRowGap="20px"
+          gridColumnGap="20px"
+        >
+          <FlexBox alignItems="center">
+            <Box width={100} height={40} bg="#ccc" />
+            <Box ml={20} width={50} height={50} bg="#ccc" borderRadius="50%" />
+          </FlexBox>
+          <FlexBox gridColumnGap={10} alignItems="center">
+            <Box width={100} height={40} bg="#ccc" />
+            <Box width={100} height={40} bg="#ccc" borderRadius={10} />
+            <TextButton width={30} height={40} bg="#ccc" borderRadius={10} />
+          </FlexBox>
+        </FlexBox>
+        <FlexBox vertical gridRowGap={10}>
+          {[1, 2, 3, 4, 5].map((i, index) => (
+            <FlexBox key={index} gridColumnGap={5}>
+              <Box flex={1} height={30} bg="#ccc" borderRadius={10} />
+              <Box width={30} height={30} bg="#ccc" borderRadius={10} />
+              <Box width={30} height={30} bg="#ccc" borderRadius={10} />
+            </FlexBox>
+          ))}
+        </FlexBox>
+        <FlexBox gridColumnGap={10} alignItems="center">
+          <Box width={100} height={40} bg="#ccc" />
+          <Box width={100} height={40} bg="#ccc" borderRadius={10} />
+          <TextButton width={30} height={40} bg="#ccc" borderRadius={10} />
+        </FlexBox>
+      </FlexBox>
+    </FlexBox>
   );
 }

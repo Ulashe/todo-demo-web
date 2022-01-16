@@ -3,7 +3,7 @@ import { border, color, compose, space, typography } from "styled-system";
 
 export const Heading = styled("p")(
   (props) => ({
-    fontSize: 36,
+    fontSize: 30,
     fontWeight: 600,
     letterSpacing: 2,
     color: props.theme.colors.blue[1],

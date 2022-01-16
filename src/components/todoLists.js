@@ -1,15 +1,15 @@
 import React from "react";
 import { Heading, IconWrapper, ProgressCircle, TextButton, TodoListItem } from "./";
-import { FlexBox, Link, Text } from "./styled-components";
+import { Box, FlexBox, Link, Text } from "./styled-components";
 import { hslaAdjust } from "../utils/hslaAdjust";
 import { DeleteIcon, DoneIcon, MoreIcon } from "../assets/icons";
 import { Confirm, ModalButton, NewTodoList } from "./modals";
 
-export function TodoLists({ todoLists, addTodoListHandler, removeTodoListHandler }) {
+export function TodoLists({ todoLists, loading, addTodoListHandler, removeTodoListHandler }) {
   return (
     <div>
       <Heading>Todo Lists</Heading>
-      <FlexBox flexDirection="column" gridRowGap="10px" my="10px">
+      <FlexBox flexDirection="column" gridRowGap="10px" my="20px">
         {todoLists.length > 0 ? (
           todoLists.map((todoList) => {
             const counts = todoList.todos.reduce(
@@ -69,8 +69,18 @@ export function TodoLists({ todoLists, addTodoListHandler, removeTodoListHandler
               </FlexBox>
             );
           })
+        ) : loading ? (
+          [1, 2, 3, 4].map((i, index) => (
+            <FlexBox key={index} gridColumnGap="5px" alignItems="stretch">
+              <Box borderRadius="50%" bg="#ccc" width={60} height={60} />
+              <Box flex={1} borderRadius={10} bg="#ccc" height={60} />
+              <Box borderRadius={10} bg="#ccc" height={60} width={32} />
+            </FlexBox>
+          ))
         ) : (
-          <div>Hiç todo list yok</div>
+          <Text color="primary" fontSize={32} textAlign="center" p={20}>
+            Hiç bir kayıt bulunamadı!
+          </Text>
         )}
       </FlexBox>
       <ModalButton modalContent={<NewTodoList addTodoListHandler={addTodoListHandler} />}>

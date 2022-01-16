@@ -9,8 +9,9 @@ import {
   updateTodoList,
 } from "../redux/reducers/localTodoLists";
 import axios from "axios";
-import { TodoList } from "../components";
+import { TodoList, TodoListPlaceholder } from "../components";
 import { useIsAuthenticated } from "../utils/hooks/useIsAuthenticated";
+import { Text } from "../components/styled-components";
 
 export default function TodoListPage() {
   const isAuthenticated = useIsAuthenticated();
@@ -25,6 +26,7 @@ function RemoteTodoList() {
   const location = useLocation();
   const [todoList, setTodoList] = useState();
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (location.state && location.state.todoList) {
@@ -39,11 +41,11 @@ function RemoteTodoList() {
         })
         .catch((err) => {
           if (err.response.status == 403) {
-            // error message Not allowed
+            setErrorMessage("Bu kaydı görüntülemek için yetkiniz yok!");
           } else if (err.response.status == 404) {
-            // error message Not found
+            setErrorMessage("Böyle bir kayıt bulunamadı!");
           } else if (err.response.status == 400) {
-            // error message - invalid object id
+            setErrorMessage("Böyle bir kayıt bulunamadı! Lütfen kayıt id'sini kontrol edin.");
           }
           setLoading(false);
         });
@@ -107,9 +109,11 @@ function RemoteTodoList() {
       removeTodoHandler={removeTodoHandler}
     />
   ) : loading ? (
-    <div>placeholder</div>
+    <TodoListPlaceholder />
   ) : (
-    <div>Böyle bir kayıt bulunamadı</div>
+    <Text color="primary" fontSize={32} textAlign="center" p={20}>
+      {errorMessage}
+    </Text>
   );
 }
 
@@ -148,6 +152,8 @@ function LocalTodoList() {
       updateTodoListHandler={updateTodoListHandler}
     />
   ) : (
-    <div>Böyle bir kayıt bulunamadı</div>
+    <Text color="primary" fontSize={32} textAlign="center" p={20}>
+      Böyle bir kayıt bulunamadı!
+    </Text>
   );
 }

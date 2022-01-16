@@ -21,9 +21,13 @@ export default function TodoListsPage() {
 
 function RemoteTodoLists() {
   const [todoLists, setTodoLists] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get("/todolists").then((res) => setTodoLists(res.data));
+    axios.get("/todolists").then((res) => {
+      setTodoLists(res.data);
+      setLoading(false);
+    });
   }, []);
 
   const addTodoListHandler = ({ title }, callback) => {
@@ -31,7 +35,6 @@ function RemoteTodoLists() {
       .post("/todolists", { title })
       .then((res) => {
         setTodoLists((todoLists) => [...todoLists, res.data]);
-
         if (typeof callback == "function") callback();
       })
       .catch((err) => {
@@ -54,6 +57,7 @@ function RemoteTodoLists() {
   return (
     <TodoLists
       todoLists={todoLists}
+      loading={loading}
       addTodoListHandler={addTodoListHandler}
       removeTodoListHandler={removeTodoListHandler}
     />
