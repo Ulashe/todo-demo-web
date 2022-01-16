@@ -24,16 +24,11 @@ export function TodoList({
 
   const addTodo = (e) => {
     e.preventDefault();
-    setLoading(true);
     if (text.length > 0) {
-      addTodoHandler({ _id: todoList._id, text }, (err) => {
-        if (err) {
-          console.log(err);
-          setLoading(false);
-        } else {
-          setText("");
-          setLoading(false);
-        }
+      setLoading(true);
+      addTodoHandler({ _id: todoList._id, text }, () => {
+        setText("");
+        setLoading(false);
       });
     }
   };

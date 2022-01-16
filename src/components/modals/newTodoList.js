@@ -9,8 +9,8 @@ export function NewTodoList({ openModal, closeModal, addTodoListHandler }) {
   const [loading, setLoading] = useState(false);
   const addTodoList = (e) => {
     e.preventDefault();
-    setLoading(true);
     if (title.length > 0) {
+      setLoading(true);
       addTodoListHandler({ title }, (err) => {
         setLoading(false);
         if (err) {
