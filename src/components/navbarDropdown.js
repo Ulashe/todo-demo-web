@@ -6,12 +6,19 @@ import { TextButton } from "./";
 import { useDispatch } from "react-redux";
 import { signOutThunk } from "../redux/reducers/authentication";
 import { hslaAdjust } from "../utils/hslaAdjust";
+import { useNavigate } from "react-router-dom";
 
 export function NavbarDropdown({ containerRef, auth, closeDropdown }) {
   const theme = useTheme();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const signOut = (callback) => {
-    dispatch(signOutThunk(callback));
+    dispatch(
+      signOutThunk(() => {
+        callback();
+        navigate("/");
+      })
+    );
     closeDropdown();
   };
 

@@ -9,11 +9,7 @@ export function Confirm({ openModal, closeModal, onConfirm, contentText, buttonT
     setLoading(true);
     onConfirm((err) => {
       setLoading(false);
-      if (err) {
-        console.log(err);
-      } else {
-        closeModal();
-      }
+      closeModal();
     });
   };
   return (
