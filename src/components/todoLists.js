@@ -61,7 +61,7 @@ export function TodoLists({ todoLists, addTodoListHandler, removeTodoListHandler
                     center
                     iconSize="32px"
                     borderRadius="10px"
-                    hoverBg={(theme) => hslaAdjust({ color: theme.colors.blue[1], lightness: 50 })}
+                    hoverBg={(theme) => hslaAdjust({ color: theme.colors.blue[1], l: 50 })}
                   >
                     <DeleteIcon />
                   </IconWrapper>

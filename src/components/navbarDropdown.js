@@ -34,7 +34,7 @@ export function NavbarDropdown({ containerRef, auth, closeDropdown }) {
       p={10}
       borderRadius={10}
       style={{ whiteSpace: "nowrap" }}
-      bg={hslaAdjust({ color: theme.colors.blue[0], lightness: 70 })}
+      bg={hslaAdjust({ color: theme.colors.blue[0], l: 70 })}
       maxWidth={200}
     >
       {auth.accessToken ? (

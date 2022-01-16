@@ -39,7 +39,7 @@ const textButton = {
     ...textButtonCommon,
     color: colors.blue[1],
     "&:hover": {
-      backgroundColor: hslaAdjust({ color: colors.blue[1], lgtAbs: 80 }),
+      backgroundColor: hslaAdjust({ color: colors.blue[1], lAbs: 80 }),
     },
   },
   outlined: {
@@ -48,7 +48,7 @@ const textButton = {
     borderColor: colors.blue[1],
     "&:hover": {
       transform: "scale(0.98)",
-      backgroundColor: hslaAdjust({ color: colors.blue[1], lgtAbs: 80 }),
+      backgroundColor: hslaAdjust({ color: colors.blue[1], lAbs: 80 }),
     },
   },
   contained: {
