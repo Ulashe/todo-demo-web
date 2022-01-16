@@ -25,15 +25,15 @@ export function Navbar() {
       <Inner>
         <FlexBox center justifyContent="space-between">
           <Heading style={{ cursor: "pointer" }} onClick={goToHomepage}>
-            To Do Demo
+            Todo Lists App
           </Heading>
-          <Box position="relative">
+          <Box position="relative" mr={10}>
             <IconWrapper
               ref={buttonRef}
               iconFill={(theme) => theme.navbar.iconColor}
+              hoverBg={(theme) => theme.navbar.iconHoverBg}
               iconSize="36px"
               onClick={openDropdown}
-              hoverBg={(theme) => theme.colors.blue[3]}
               cursor="pointer"
               borderRadius={10}
             >
@@ -54,17 +54,20 @@ export function Navbar() {
 }
 
 const Outer = styled("div")({
-  backgroundColor: ({ theme }) => theme.colors.blue[0],
+  backgroundColor: ({ theme }) => theme.navbar.bg,
+  borderBottomWidth: 1,
+  borderBottomStyle: "solid",
+  borderBottomColor: ({ theme }) => theme.navbar.borderBottomColor,
 });
 
 const Inner = styled("div")({
   maxWidth: ({ theme }) => theme.maxWidth,
   margin: "auto",
-  padding: "0 10px",
 });
 
 const Heading = styled("div")({
-  color: "white",
-  fontSize: 24,
+  color: ({ theme }) => theme.navbar.color,
+  fontSize: 30,
+  fontWeight: 600,
   padding: 15,
 });
