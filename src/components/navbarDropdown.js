@@ -40,6 +40,7 @@ export function NavbarDropdown({ containerRef, auth, closeDropdown }) {
       {auth.accessToken ? (
         <>
           <Text
+            textAlign="center"
             color="blue.1"
             fontSize={16}
             p={5}

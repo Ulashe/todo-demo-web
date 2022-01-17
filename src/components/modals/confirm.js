@@ -23,6 +23,7 @@ export function Confirm({ openModal, closeModal, onConfirm, contentText, buttonT
           İptal
         </TextButton>,
       ]}
+      width={["80%", "300px"]}
     >
       <Box p={20}>
         <Text fontSize={20}>{contentText}</Text>
