@@ -16,6 +16,7 @@ import { Link as RouterLink } from "react-router-dom";
 export const Box = styled("div")(compose(border, color, flexbox, layout, position, shadow, space));
 
 export const Text = styled("p")(
+  { whiteSpace: ({ wrap }) => (wrap ? "normal" : undefined) },
   compose(border, color, layout, position, shadow, space, typography)
 );
 

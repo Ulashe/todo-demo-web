@@ -26,7 +26,9 @@ export function Confirm({ openModal, closeModal, onConfirm, contentText, buttonT
       width={["80%", "300px"]}
     >
       <Box p={20}>
-        <Text fontSize={20}>{contentText}</Text>
+        <Text wrap fontSize={20}>
+          {contentText}
+        </Text>
       </Box>
     </ModalFormLayout>
   );
