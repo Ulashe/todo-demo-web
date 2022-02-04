@@ -29,8 +29,7 @@ export function SignIn({ openModal, closeModal, closeDropdown }) {
         })
         .catch((err) => {
           setLoading(false);
-          const { errors, code } = err.response.data;
-          setError(errors.find((i) => i.code == code));
+          setError(err.response.data.error);
         });
     }
   };
@@ -62,7 +61,7 @@ export function SignIn({ openModal, closeModal, closeDropdown }) {
         />
         {error.field == "email" ? (
           <Text fontSize={12} color="red" mt={-5}>
-            {error.code == 1 ? "Email hatalı!" : error.code == 3 ? "Email bulunamadı!" : null}
+            {error.code == 0 ? "Email hatalı!" : error.code == 2 ? "Email bulunamadı!" : null}
           </Text>
         ) : null}
         <Text fontSize={16} color={error.field == "password" ? "red" : undefined}>
@@ -79,9 +78,9 @@ export function SignIn({ openModal, closeModal, closeDropdown }) {
         />
         {error.field == "password" ? (
           <Text fontSize={12} color="red" mt={-5}>
-            {error.code == 4
+            {error.code == 3
               ? "Şifre en az 6 haneli olmalıdır!"
-              : error.code == 5
+              : error.code == 4
               ? "Şifre yanlış!"
               : null}
           </Text>

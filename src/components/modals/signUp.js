@@ -31,8 +31,7 @@ export function SignUp({ openModal, closeModal, closeDropdown }) {
           })
           .catch((err) => {
             setLoading(false);
-            const { errors, code } = err.response.data;
-            setError(errors.find((i) => i.code == code));
+            setError(err.response.data.error);
           });
       } else {
         setError({ field: "passwordRepeat" });
@@ -67,7 +66,7 @@ export function SignUp({ openModal, closeModal, closeDropdown }) {
         />
         {error.field == "email" ? (
           <Text fontSize={12} color="red" mt={-5}>
-            {error.code == 1 ? "Email hatalı!" : error.code == 2 ? "Email zaten kullanımda!" : null}
+            {error.code == 0 ? "Email hatalı!" : error.code == 1 ? "Email zaten kullanımda!" : null}
           </Text>
         ) : null}
         {/* Password */}

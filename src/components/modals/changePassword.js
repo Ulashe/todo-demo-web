@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ModalFormLayout } from "./modalFormLayout";
 import { TextButton } from "../textButton";
-import { Box, FlexBox, Text } from "../styled-components";
+import { FlexBox, Text } from "../styled-components";
 import { TextInput } from "../textInput";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -28,8 +28,7 @@ export function ChangePassword({ openModal, closeModal, closeDropdown }) {
         })
         .catch((err) => {
           setLoading(false);
-          const { errors, code } = err.response.data;
-          setError(errors.find((i) => i.code == code));
+          setError(err.response.data.error);
         });
     }
   };
@@ -62,7 +61,7 @@ export function ChangePassword({ openModal, closeModal, closeDropdown }) {
         />
         {error.field == "password" ? (
           <Text fontSize={12} color="red" mt={-5}>
-            {error.code == 4 ? "Şifre en az 6 haneli olmalıdır!" : "Şifre yanlış!"}
+            {error.code == 3 ? "Şifre en az 6 haneli olmalıdır!" : "Şifre yanlış!"}
           </Text>
         ) : null}
         <Text fontSize={16} color={error.field == "newPassword" ? "red" : undefined}>
