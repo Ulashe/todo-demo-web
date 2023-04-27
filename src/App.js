@@ -10,7 +10,7 @@ import Layout from "./pages/layout";
 import TodoLists from "./pages/todoLists";
 import TodoList from "./pages/todoList";
 
-axios.defaults.baseURL = "https://todo-lists-server.herokuapp.com/api";
+axios.defaults.baseURL = "https://todo-lists-server.vercel.app/api";
 
 export default function App() {
   const theme = store.getState().theme;
